@@ -1,15 +1,13 @@
-// import create from "zustand";
-// import { Exchange } from "../../domain/entities/exchange";
-// import { ExchangePair } from "../../domain/port/entities/exchange.port";
-// import { PositionStoreInterface } from "../../domain/port/store/candle";
-// import { PositionRepository } from "../repositories/candle";
+import create from "zustand";
+import { Position } from "../../domain/port/entities/position.port";
+import { PositionStoreInterface } from "../../domain/port/store/position";
 
-// export const PositionStore = () => {
-//   return create<PositionStoreInterface>(set => ({
-//     positions : [],
-//     loading : false,
-//     set: async (startDate: Date, endDate: Date, pair: ExchangePair) => {
-//       set(state => ({ ...state, positions, loading : false }))
-//     }
-//   }))
-// }
+export const PositionStore = () => {
+  return create<PositionStoreInterface>(set => ({
+    positions : [],
+    loading : false,
+    set: async (positions: Position[]) => {
+      set(state => ({ ...state, positions }))
+    },
+  }))
+}

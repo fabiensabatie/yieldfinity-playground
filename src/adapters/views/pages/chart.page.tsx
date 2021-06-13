@@ -14,7 +14,7 @@ import ResponsiveDateRangePicker from "../components/commons/date-picker.compone
 import { PositionList } from "../components/positions/list";
 import { PositionResults } from "../components/positions/results";
 
-const orders:Position[] = JSON.parse(JSON.stringify(MockOrderData)).map((order:any) => ({...order, state : { ...order.state, openAt : new Date(order.state.openAt), closeAt: new Date(order.state.closeAt)}}))
+// const orders:Position[] = JSON.parse(JSON.stringify(MockOrderData)).map((order:any) => ({...order, state : { ...order.state, openAt : new Date(order.state.openAt), closeAt: new Date(order.state.closeAt)}}))
 // const mockCandles:Candle[] = JSON.parse(JSON.stringify(MockCandleData)).map((candle:any) => ({...candle, openAt : new Date(candle.openAt), closeAt: new Date(candle.closeAt)}))
 
 export const ChartPage: React.FunctionComponent = () => {
@@ -24,6 +24,7 @@ export const ChartPage: React.FunctionComponent = () => {
   const [inputPairValue, setInputPairValue] = useState<ExchangePair>(pair);
   const setCandles = Store.candles(state => state.set);
   const candles = Store.candles(state => state.candles);
+  const orders = Store.positions(state => state.positions);
   const loading = Store.candles(state => state.loading);
   
   const getCandles:Function = () => setCandles(startDate, endDate, pair);
