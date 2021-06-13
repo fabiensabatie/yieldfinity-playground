@@ -8,8 +8,8 @@ import { CandleProps } from "../../domain/port/entities/candle.port";
 
 export class CandleRepository extends BaseRepository implements CandleRepositoryInterface {
   public async get(exchange: Exchange, startDate: Date, endDate: Date, pair: ExchangePair):Promise<Candle[]> {
-    const response = await axios.post('http://localhost:4242/candles/binance', { startDate, endDate, pair })
-    return response.data.map(((candle:CandleProps) => new Candle({
+    const response = await axios.post<{candles: Candle[]}>('http://localhost:4242/candles', { sDate: startDate, eDate: endDate, pair })
+    return response.data.candles.map(((candle:CandleProps) => new Candle({
       openAt : new Date(candle.openAt),
       closeAt :new Date(candle.closeAt),
       open : candle.open,

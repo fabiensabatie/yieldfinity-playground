@@ -9,6 +9,7 @@ import { ExchangePair, ExchangePairList } from "../../../domain/port/entities/ex
 import { Position } from "../../../domain/port/entities/position.port";
 import { Store } from "../../store";
 import { CandleChart } from "../components/charts/candle-chart";
+import { Upload } from "../components/commons/json-reader.component";
 import ResponsiveDateRangePicker from "../components/commons/date-picker.component";
 import { PositionList } from "../components/positions/list";
 import { PositionResults } from "../components/positions/results";
@@ -19,7 +20,7 @@ const orders:Position[] = JSON.parse(JSON.stringify(MockOrderData)).map((order:a
 export const ChartPage: React.FunctionComponent = () => {
   const [startDate, setStartDate] = useState<Date>(new Date('2021-04-02'));
   const [endDate, setEndDate] = useState<Date>(new Date('2021-04-20'));
-  const [pair, setPair] = useState<ExchangePair>("BTCUSDT");
+  const [pair, setPair] = useState<ExchangePair>("ETHUSDT");
   const [inputPairValue, setInputPairValue] = useState<ExchangePair>(pair);
   const setCandles = Store.candles(state => state.set);
   const candles = Store.candles(state => state.candles);
@@ -36,15 +37,18 @@ export const ChartPage: React.FunctionComponent = () => {
         </div> : ""}
       { !loading && 
         <div className="h-full w-full flex flex-col justify-between">
-          <div className="w-full flex p-10">
-            <Autocomplete
-              value={pair} onChange={(event, value:string | null) => { setPair(value as ExchangePair || pair); }}
-              inputValue={inputPairValue} onInputChange={(event, value:string) => { setInputPairValue(value as ExchangePair || ""); }}
-              id="pair-selector" options={ExchangePairList} style={{ width: 300 }}
-              renderInput={(params) => <TextField {...params} label="Pair" variant="outlined" />}
-            />
-            <ResponsiveDateRangePicker updateStartDate={setStartDate} updateEndDate={setEndDate} startDate={startDate} endDate={endDate} />
-            <RefreshIcon className="mt-3 cursor-pointer" onClick={() => getCandles()}></RefreshIcon>
+          <div className="w-full flex justify-between p-10">
+            <Upload />
+            <div className="w-full flex">
+              <Autocomplete
+                value={pair} onChange={(event, value:string | null) => { setPair(value as ExchangePair || pair); }}
+                inputValue={inputPairValue} onInputChange={(event, value:string) => { setInputPairValue(value as ExchangePair || ""); }}
+                id="pair-selector" options={ExchangePairList} style={{ width: 300 }}
+                renderInput={(params) => <TextField {...params} label="Pair" variant="outlined" />}
+              />
+              <ResponsiveDateRangePicker updateStartDate={setStartDate} updateEndDate={setEndDate} startDate={startDate} endDate={endDate} />
+              <RefreshIcon className="mt-3 cursor-pointer" onClick={() => getCandles()}></RefreshIcon>
+            </div>
           </div>
           <div className="flex h-3/6 pb-0">
             <div className="w-4/6  pl-10">

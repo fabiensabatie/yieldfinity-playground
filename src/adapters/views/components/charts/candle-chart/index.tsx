@@ -28,7 +28,7 @@ export const CandleChart = ({ candles, positions, indicators}: CandleChartProps)
   useEffect(() => {
     new ResizeSensor(document.querySelector('#chart-container'), () => {
       const chartDOM = document.querySelector('#chart-container')  as HTMLElement;
-      if(chart) chart.resize(chartDOM.clientWidth - 40, chartDOM.clientHeight - 40)
+      if (chart && chartDOM) chart.resize(chartDOM.clientWidth - 40, chartDOM.clientHeight - 40)
     })
   }, [chart])
 
