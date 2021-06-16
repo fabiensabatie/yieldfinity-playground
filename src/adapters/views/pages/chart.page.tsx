@@ -55,7 +55,7 @@ export const ChartPage: React.FunctionComponent = () => {
             <div className="w-4/6  pl-10">
               <div className="w-full h-full rounded-huge shadow-videocard overflow-hidden">
                 <div className="w-full h-full">
-                <CandleChart positions={orders} indicators={[]} candles={candles}></CandleChart>
+                  <CandleChart positions={orders} indicators={[]} candles={candles}></CandleChart>
                 </div>
               </div>
             </div>
