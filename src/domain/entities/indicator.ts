@@ -2,6 +2,7 @@
 import { IndicatorDependencies, IndicatorOutputs, IndicatorParameters, IndicatorProps, Indicators } from "../port/entities/indicator.port";
 import { IndicatorMethod } from "../port/mappers/indicator-method-parameters-mapper.port";
 import { Candle } from "./candle";
+import { StrategyIndicatorTrigger } from "./strategy-indicator-trigger";
 
 export type IndicatorsList = { [key in Indicators] : Indicator[] }
 
@@ -14,6 +15,7 @@ export class Indicator {
   public get name(): string { return this.props.name; }
   public get values():IndicatorOutputs { return this.generated; }
   public get parameters(): IndicatorParameters  { return this.props.parameters; }
+  public get triggers(): StrategyIndicatorTrigger[]  { return this.props.triggers; }
   
   public generate(candles: Candle[]) {
     const parameters:IndicatorParameters = this.dependencies.mapper[this.name as IndicatorMethod]({
