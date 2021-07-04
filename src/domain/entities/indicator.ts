@@ -15,7 +15,6 @@ export class Indicator {
   public get name(): string { return this.props.name; }
   public get values():IndicatorOutputs { return this.generated; }
   public get parameters(): IndicatorParameters  { return this.props.parameters; }
-  public get triggers(): StrategyIndicatorTrigger[]  { return this.props.triggers; }
   
   public generate(candles: Candle[]) {
     const parameters:IndicatorParameters = this.dependencies.mapper[this.name as IndicatorMethod]({

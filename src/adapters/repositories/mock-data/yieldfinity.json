@@ -1,0 +1,502 @@
+[
+  {
+    "value": "export * from './indicators.factory';\r\n",
+    "filename": "file:///node_modules/yieldfinity/adapters/factories/index.d.ts",
+    "language": "typescript"
+  },
+  {
+    "value": "import { Indicator } from \"../../domain/entities/indicator\";\r\nimport { SMAIndicatorParameters } from \"../../domain/port/entities/indicators/sma.port\";\r\nimport { IndicatorsFactoryInterface } from \"../../domain/port/factories/indicators.factory.port\";\r\nimport { EMAIndicatorParameters } from \"../../domain/port/entities/indicators/ema.port\";\r\nimport { RSIIndicatorParameters } from \"../../domain/port/entities/indicators/rsi.port\";\r\nimport { MACDIndicatorParameters } from \"../../domain/port/entities/indicators/macd.port\";\r\nimport { ATRIndicatorParameters } from \"../../domain/port/entities/indicators/atr.port\";\r\nimport { IndicatorDependencies } from \"../../domain/port/entities/indicator.port\";\r\nimport { PriceIndicatorParameters } from \"../../domain/port/entities/indicators/price.port\";\r\nexport declare class Indicators implements IndicatorsFactoryInterface {\r\n    private dependencies;\r\n    indicatorDependencies: IndicatorDependencies;\r\n    triggers: {\r\n        sma: string[];\r\n        ema: string[];\r\n        rsi: string[];\r\n        atr: string[];\r\n        macd: string[];\r\n    };\r\n    sma(parameters: SMAIndicatorParameters): Indicator;\r\n    ema(parameters: EMAIndicatorParameters): Indicator;\r\n    rsi(parameters: RSIIndicatorParameters): Indicator;\r\n    macd(parameters: MACDIndicatorParameters): Indicator;\r\n    atr(parameters: ATRIndicatorParameters): Indicator;\r\n    price(parameters: PriceIndicatorParameters): Indicator;\r\n}\r\n",
+    "filename": "file:///node_modules/yieldfinity/adapters/factories/indicators.factory.d.ts",
+    "language": "typescript"
+  },
+  {
+    "value": "export * from './factories';\r\nexport * from './mappers';\r\nexport * from './repositories';\r\nexport * from './services';\r\n",
+    "filename": "file:///node_modules/yieldfinity/adapters/index.d.ts",
+    "language": "typescript"
+  },
+  {
+    "value": "import { Candle } from \"../../domain/entities/candle\";\r\nimport { CandleProps } from \"../../domain/port/entities/candle.port\";\r\nimport { ExchangePair } from \"../../domain/port/repositories/exchange.port\";\r\ndeclare const CandleMapper: {\r\n    toDomain(candle: CandleProps): Candle;\r\n    exchanges: {\r\n        binance: {\r\n            toDomain(candleData: string[], pair: ExchangePair): Candle;\r\n        };\r\n        bitvavo: {\r\n            toDomain(candleData: Array<string | number>, pair: ExchangePair): Candle;\r\n        };\r\n    };\r\n};\r\nexport default CandleMapper;\r\n",
+    "filename": "file:///node_modules/yieldfinity/adapters/mappers/candle.mapper.d.ts",
+    "language": "typescript"
+  },
+  {
+    "value": "export * from './candle.mapper';\r\nexport * from './indicator-method.mapper';\r\n",
+    "filename": "file:///node_modules/yieldfinity/adapters/mappers/index.d.ts",
+    "language": "typescript"
+  },
+  {
+    "value": "import { Candle } from \"../../domain/entities/candle\";\r\nimport { ATRIndicatorInput } from \"../../domain/port/entities/indicators/atr.port\";\r\nimport { EMAIndicatorInput } from \"../../domain/port/entities/indicators/ema.port\";\r\nimport { MACDIndicatorInput } from \"../../domain/port/entities/indicators/macd.port\";\r\nimport { PriceIndicatorInput, PriceIndicatorParameters } from \"../../domain/port/entities/indicators/price.port\";\r\nimport { RSIIndicatorInput } from \"../../domain/port/entities/indicators/rsi.port\";\r\nimport { SMAIndicatorInput } from \"../../domain/port/entities/indicators/sma.port\";\r\nimport { IndicatorMethodParametersMapperInterface } from \"../../domain/port/mappers/indicator-method-parameters-mapper.port\";\r\nexport declare class IndicatorMethodParametersMapper implements IndicatorMethodParametersMapperInterface {\r\n    sma: (candle: Candle) => SMAIndicatorInput;\r\n    ema: (candle: Candle) => EMAIndicatorInput;\r\n    rsi: (candle: Candle) => RSIIndicatorInput;\r\n    macd: (candle: Candle) => MACDIndicatorInput;\r\n    atr: (candle: Candle) => ATRIndicatorInput;\r\n    price: (candle: Candle, parameters: PriceIndicatorParameters) => PriceIndicatorInput;\r\n}\r\n",
+    "filename": "file:///node_modules/yieldfinity/adapters/mappers/indicator-method.mapper.d.ts",
+    "language": "typescript"
+  },
+  {
+    "value": "import { Candle } from \"../../domain/entities/candle\";\r\nimport { ExchangeRepository, ExchangeInterval, ExchangePair, BinanceCredentials } from \"../../domain/port/repositories/exchange.port\";\r\nimport { CsvService } from \"../../domain/port/services/csv.port\";\r\nimport { FileService } from \"../../domain/port/services/file.port\";\r\nimport { ZipService } from \"../../domain/port/services/zip.port\";\r\ninterface BinanceExchangeDependencies {\r\n    zip: ZipService;\r\n    file: FileService;\r\n    csv: CsvService;\r\n}\r\nexport declare class Binance implements ExchangeRepository {\r\n    private dependencies?;\r\n    private _url;\r\n    private _auth;\r\n    constructor(dependencies?: BinanceExchangeDependencies);\r\n    auth(credentials: BinanceCredentials): Promise<void>;\r\n    private buildCandleFileData;\r\n    private fetchCandles;\r\n    getCandles(sDate: Date, eDate: Date, pair: ExchangePair, interval: ExchangeInterval): Promise<Candle[]>;\r\n}\r\nexport {};\r\n",
+    "filename": "file:///node_modules/yieldfinity/adapters/repositories/binance.repository.d.ts",
+    "language": "typescript"
+  },
+  {
+    "value": "export * from './binance.repository';\r\n",
+    "filename": "file:///node_modules/yieldfinity/adapters/repositories/index.d.ts",
+    "language": "typescript"
+  },
+  {
+    "value": "import { Options } from \"csv-parse\";\r\nimport { CsvService } from \"../../domain/port/services/csv.port\";\r\nimport { FileService } from \"../../domain/port/services/file.port\";\r\ninterface CsvServiceDependencies {\r\n    file: FileService;\r\n}\r\nexport declare type CsvParserOptions = Options;\r\nexport declare class Csv implements CsvService {\r\n    private dependencies;\r\n    constructor(dependencies: CsvServiceDependencies);\r\n    parse(filePath: string, options?: CsvParserOptions): Promise<string[][]>;\r\n}\r\nexport {};\r\n",
+    "filename": "file:///node_modules/yieldfinity/adapters/services/csv.service.d.ts",
+    "language": "typescript"
+  },
+  {
+    "value": "import { FileService } from \"../../domain/port/services/file.port\";\r\nexport declare class File implements FileService {\r\n    delete(filePath: string): Promise<void>;\r\n    read(filePath: string): Promise<string>;\r\n    download(url: string, filename: string, destination: string): Promise<void>;\r\n}\r\n",
+    "filename": "file:///node_modules/yieldfinity/adapters/services/file.service.d.ts",
+    "language": "typescript"
+  },
+  {
+    "value": "export * from './csv.service';\r\nexport * from './file.service';\r\nexport * from './zip.service';\r\n",
+    "filename": "file:///node_modules/yieldfinity/adapters/services/index.d.ts",
+    "language": "typescript"
+  },
+  {
+    "value": "import { ZipService } from \"../../domain/port/services/zip.port\";\r\nexport declare class Zip implements ZipService {\r\n    unzip(path: string, destinationFilename: string, destinationPath: string): Promise<void>;\r\n}\r\n",
+    "filename": "file:///node_modules/yieldfinity/adapters/services/zip.service.d.ts",
+    "language": "typescript"
+  },
+  {
+    "value": "export { Candle } from \"./domain\";\r\n",
+    "filename": "file:///node_modules/yieldfinity/candle.d.ts",
+    "language": "typescript"
+  },
+  {
+    "value": "import { CandleProps } from \"../port/entities/candle.port\";\r\nexport declare class Candle {\r\n    private props;\r\n    constructor(props: CandleProps);\r\n    get openAt(): Date;\r\n    get closeAt(): Date;\r\n    get open(): number;\r\n    get close(): number;\r\n    get high(): number;\r\n    get low(): number;\r\n    get volume(): number;\r\n    get exchange(): string;\r\n    get pair(): string;\r\n    get data(): CandleProps;\r\n}\r\n",
+    "filename": "file:///node_modules/yieldfinity/domain/entities/candle.d.ts",
+    "language": "typescript"
+  },
+  {
+    "value": "import { CustomTriggerFlowProps } from \"../port/entities/custom-trigger-flow.port\";\r\nimport { Position } from \"../port/entities/orders/position.port\";\r\n/**\r\n * Trigger flow\r\n * @param flow: An array of TriggerSet. Each set of triggers will be tested independently.\r\n */\r\nexport declare class CustomTriggerFlow {\r\n    private props;\r\n    constructor(props: CustomTriggerFlowProps);\r\n    getTriggeredPositions(): Position[];\r\n}\r\n",
+    "filename": "file:///node_modules/yieldfinity/domain/entities/custom-trigger-flow.d.ts",
+    "language": "typescript"
+  },
+  {
+    "value": "export * from './orders';\r\nexport * from './triggers';\r\nexport * from './candle';\r\nexport * from './custom-trigger-flow';\r\nexport * from './indicator';\r\nexport * from './strategy';\r\nexport * from './trigger-flow';\r\n",
+    "filename": "file:///node_modules/yieldfinity/domain/entities/index.d.ts",
+    "language": "typescript"
+  },
+  {
+    "value": "import { IndicatorDependencies, IndicatorOutput, IndicatorParameters, IndicatorProps, IndicatorsName } from \"../port/entities/indicator.port\";\r\nimport { Candle } from \"./candle\";\r\nexport declare type IndicatorsList = {\r\n    [key in IndicatorsName]: Indicator[];\r\n};\r\nexport declare class Indicator {\r\n    private props;\r\n    private dependencies;\r\n    private generated;\r\n    constructor(props: IndicatorProps, dependencies: IndicatorDependencies);\r\n    get method(): Function;\r\n    get name(): string;\r\n    get values(): IndicatorOutput[];\r\n    get parameters(): IndicatorParameters;\r\n    get lastValue(): IndicatorOutput;\r\n    get lastIndex(): number;\r\n    generate(candle: Candle): any;\r\n}\r\n",
+    "filename": "file:///node_modules/yieldfinity/domain/entities/indicator.d.ts",
+    "language": "typescript"
+  },
+  {
+    "value": "import { FutureOrderProps, FutureOrderSide, FutureOrderState, FutureOrderType } from \"../../port/entities/orders/future-order.port\";\r\nimport { ExchangePair } from \"../../port/repositories/exchange.port\";\r\nexport declare class FutureOrder {\r\n    private props;\r\n    constructor(props: FutureOrderProps);\r\n    get pair(): ExchangePair;\r\n    get side(): FutureOrderSide;\r\n    get size(): number;\r\n    get order(): FutureOrderType;\r\n    get state(): FutureOrderState;\r\n}\r\n",
+    "filename": "file:///node_modules/yieldfinity/domain/entities/orders/future-order.d.ts",
+    "language": "typescript"
+  },
+  {
+    "value": "export * from './future-order';\r\nexport * from './order';\r\nexport * from './stop-loss';\r\nexport * from './take-profit';\r\n",
+    "filename": "file:///node_modules/yieldfinity/domain/entities/orders/index.d.ts",
+    "language": "typescript"
+  },
+  {
+    "value": "import { OrderParameters, OrderSide, OrderState } from \"../../port/entities/orders/order.port\";\r\nimport { ExchangePair } from \"../../port/repositories/exchange.port\";\r\nimport { Candle } from \"../candle\";\r\nimport { StopLoss } from \"./stop-loss\";\r\nimport { TakeProfit } from \"./take-profit\";\r\nexport declare class Order {\r\n    private props;\r\n    private _startPrice;\r\n    private _open;\r\n    private _state;\r\n    constructor(props: OrderParameters);\r\n    get side(): OrderSide;\r\n    get pair(): ExchangePair;\r\n    get quantity(): number;\r\n    get price(): number | \"market\";\r\n    get startPrice(): number;\r\n    get state(): OrderState;\r\n    get opened(): boolean;\r\n    get stopLoss(): StopLoss;\r\n    get takeProfit(): TakeProfit;\r\n    close: (candle: Candle) => void;\r\n    open: (candle: Candle) => void;\r\n    private updateProfitAndLoss;\r\n    triggerStopLossTakeProfitIfNecessary: (candle: Candle) => void;\r\n}\r\n",
+    "filename": "file:///node_modules/yieldfinity/domain/entities/orders/order.d.ts",
+    "language": "typescript"
+  },
+  {
+    "value": "import { StopLossTakeProfitProps } from \"../../port/entities/orders/stop-loss-take-profit.port\";\r\nimport { Order } from \"./order\";\r\nexport declare class StopLoss {\r\n    private props;\r\n    constructor(props: StopLossTakeProfitProps);\r\n    get value(): number;\r\n    get reference(): \"price\" | \"pnl\";\r\n    isReached: (order: Order, currentPrice: number) => boolean;\r\n}\r\n",
+    "filename": "file:///node_modules/yieldfinity/domain/entities/orders/stop-loss.d.ts",
+    "language": "typescript"
+  },
+  {
+    "value": "import { StopLossTakeProfitProps } from \"../../port/entities/orders/stop-loss-take-profit.port\";\r\nimport { Order } from \"./order\";\r\nexport declare class TakeProfit {\r\n    private props;\r\n    constructor(props: StopLossTakeProfitProps);\r\n    get value(): number;\r\n    get reference(): \"price\" | \"pnl\";\r\n    isReached: (order: Order, currentPrice: number) => boolean;\r\n}\r\n",
+    "filename": "file:///node_modules/yieldfinity/domain/entities/orders/take-profit.d.ts",
+    "language": "typescript"
+  },
+  {
+    "value": "import { Candle } from \"./candle\";\r\nimport { Indicator, IndicatorsList } from \"./indicator\";\r\nimport { StrategyProps } from \"../port/entities/strategy.port\";\r\nimport { Position } from \"../port/entities/orders/position.port\";\r\nimport { TriggerFlow } from \"./trigger-flow\";\r\nimport { CustomTriggerFlow } from \"./custom-trigger-flow\";\r\nimport { ExchangeRepository } from \"../port/repositories/exchange.port\";\r\nexport declare class Strategy {\r\n    private props;\r\n    private _positions;\r\n    private _positionsFile;\r\n    constructor(props: StrategyProps);\r\n    get indicator(): Indicator[];\r\n    get triggerFlow(): TriggerFlow | CustomTriggerFlow;\r\n    get exchanges(): ExchangeRepository[];\r\n    get positions(): Position[];\r\n    get closedPositions(): Position[];\r\n    get profitablePositions(): Position[];\r\n    get lostPositions(): Position[];\r\n    get profit(): number;\r\n    get pnl(): number;\r\n    get indicators(): IndicatorsList;\r\n    private appendPositions;\r\n    run(candles: Candle[]): void;\r\n    savePositions(): void;\r\n}\r\n",
+    "filename": "file:///node_modules/yieldfinity/domain/entities/strategy.d.ts",
+    "language": "typescript"
+  },
+  {
+    "value": "import { Position } from \"../port/entities/orders/position.port\";\r\nimport { TriggerFlowProps } from \"../port/entities/trigger-flow.port\";\r\n/**\r\n * Trigger flow\r\n * @param flow: An array of TriggerSet. Each set of triggers will be tested independently.\r\n */\r\nexport declare class TriggerFlow {\r\n    private props;\r\n    constructor(props: TriggerFlowProps);\r\n    private andTriggersWereTriggered;\r\n    private orTriggersWereTriggered;\r\n    getTriggeredPositions(): Position[];\r\n}\r\n",
+    "filename": "file:///node_modules/yieldfinity/domain/entities/trigger-flow.d.ts",
+    "language": "typescript"
+  },
+  {
+    "value": "import { ATRTriggerProps } from \"../../port/entities/indicators/triggers/atr.trigger.port\";\r\nimport { IndicatorTrigger } from \"./indicator-trigger\";\r\nexport declare class ATRTrigger extends IndicatorTrigger {\r\n    constructor(props: ATRTriggerProps);\r\n}\r\n",
+    "filename": "file:///node_modules/yieldfinity/domain/entities/triggers/atr.trigger.d.ts",
+    "language": "typescript"
+  },
+  {
+    "value": "import { CustomTriggerProps } from \"../../port/entities/indicators/triggers/custom.trigger.port\";\r\nimport { Position } from \"../../port/entities/orders/position.port\";\r\nexport declare class CustomTrigger {\r\n    private props;\r\n    isCustom: boolean;\r\n    constructor(props: CustomTriggerProps);\r\n    get method(): (parameters: import(\"../../port/entities/indicators/triggers/custom.trigger.port\").CustomTriggerParameters) => false | import(\"..\").Order;\r\n    get parameters(): any;\r\n    isTriggered(): Position;\r\n}\r\n",
+    "filename": "file:///node_modules/yieldfinity/domain/entities/triggers/custom.trigger.d.ts",
+    "language": "typescript"
+  },
+  {
+    "value": "import { EMATriggerProps } from \"../../port/entities/indicators/triggers/ema.trigger.port\";\r\nimport { IndicatorTrigger } from \"./indicator-trigger\";\r\nexport declare class EMATrigger extends IndicatorTrigger {\r\n    constructor(props: EMATriggerProps);\r\n}\r\n",
+    "filename": "file:///node_modules/yieldfinity/domain/entities/triggers/ema.trigger.d.ts",
+    "language": "typescript"
+  },
+  {
+    "value": "export * from './atr.trigger';\r\nexport * from './custom.trigger';\r\nexport * from './ema.trigger';\r\nexport * from './indicator-trigger';\r\nexport * from './macd.trigger';\r\nexport * from './price.trigger';\r\nexport * from './rsi.trigger';\r\nexport * from './sma.trigger';\r\n",
+    "filename": "file:///node_modules/yieldfinity/domain/entities/triggers/index.d.ts",
+    "language": "typescript"
+  },
+  {
+    "value": "import { Comparer, ComparerMode, IndicatorTriggerProps } from \"../../port/entities/indicators/triggers/indicator-trigger.port\";\r\nimport { Position } from \"../../port/entities/orders/position.port\";\r\nimport { Indicator } from \"../indicator\";\r\n/**\r\n * Indicator trigger\r\n * @param field: the name of the output of an indicator you can set a trigger on\r\n * @param triggerField: Optionnal, only for multiple output indicators.\r\n * For instance, allows you to compare the MACD signal against the histogram to check if the lines are crossing.\r\n * If specified, tMinus will be ignored and only current values will be compared.\r\n * @param triggerValue : if tMinus = 0, the current value of the indicator and the triggerValue are compared,\r\n * else it will take the value of the indicator at t - tMinus and compare it using the triggerValue\r\n * @param tMinus : in minutes\r\n * @param comparer : basic TS comparison operators (\"<\" or \">\" or \"<=\" or \"=>\" or \"=\" )\r\n * @param mode : relative comparison (percentage) or absolute comparison (number)\r\n */\r\nexport declare class IndicatorTrigger {\r\n    private props;\r\n    isCustom: boolean;\r\n    constructor(props: IndicatorTriggerProps);\r\n    get triggerField(): string;\r\n    get triggerValue(): number;\r\n    get field(): string;\r\n    get tMinus(): number;\r\n    get comparer(): Comparer;\r\n    get mode(): ComparerMode;\r\n    get indicator(): Indicator;\r\n    private getComparedValue;\r\n    private getCurrentValue;\r\n    private compareValues;\r\n    isTriggered(): boolean | Position;\r\n}\r\n",
+    "filename": "file:///node_modules/yieldfinity/domain/entities/triggers/indicator-trigger.d.ts",
+    "language": "typescript"
+  },
+  {
+    "value": "import { MACDTriggerProps } from \"../../port/entities/indicators/triggers/macd.trigger.port\";\r\nimport { IndicatorTrigger } from \"./indicator-trigger\";\r\nexport declare class MACDTrigger extends IndicatorTrigger {\r\n    constructor(props: MACDTriggerProps);\r\n}\r\n",
+    "filename": "file:///node_modules/yieldfinity/domain/entities/triggers/macd.trigger.d.ts",
+    "language": "typescript"
+  },
+  {
+    "value": "import { PriceTriggerProps } from \"../../port/entities/indicators/triggers/price.trigger.port\";\r\nimport { IndicatorTrigger } from \"./indicator-trigger\";\r\nexport declare class PriceTrigger extends IndicatorTrigger {\r\n    constructor(props: PriceTriggerProps);\r\n}\r\n",
+    "filename": "file:///node_modules/yieldfinity/domain/entities/triggers/price.trigger.d.ts",
+    "language": "typescript"
+  },
+  {
+    "value": "import { RSITriggerProps } from \"../../port/entities/indicators/triggers/rsi.trigger.port\";\r\nimport { IndicatorTrigger } from \"./indicator-trigger\";\r\nexport declare class RSITrigger extends IndicatorTrigger {\r\n    constructor(props: RSITriggerProps);\r\n}\r\n",
+    "filename": "file:///node_modules/yieldfinity/domain/entities/triggers/rsi.trigger.d.ts",
+    "language": "typescript"
+  },
+  {
+    "value": "import { SMATriggerProps } from \"../../port/entities/indicators/triggers/sma.trigger.port\";\r\nimport { IndicatorTrigger } from \"./indicator-trigger\";\r\nexport declare class SMATrigger extends IndicatorTrigger {\r\n    constructor(props: SMATriggerProps);\r\n}\r\n",
+    "filename": "file:///node_modules/yieldfinity/domain/entities/triggers/sma.trigger.d.ts",
+    "language": "typescript"
+  },
+  {
+    "value": "export * from './entities';\r\nexport * from './port';\r\n",
+    "filename": "file:///node_modules/yieldfinity/domain/index.d.ts",
+    "language": "typescript"
+  },
+  {
+    "value": "import { ExchangeInterval, ExchangePair } from \"../repositories/exchange.port\";\r\nexport interface CandleIntervalProps {\r\n    id?: number;\r\n    startDate: Date;\r\n    endDate: Date;\r\n    exchange: string;\r\n    pair: ExchangePair;\r\n    interval: ExchangeInterval;\r\n}\r\n",
+    "filename": "file:///node_modules/yieldfinity/domain/port/entities/candle-interval.port.d.ts",
+    "language": "typescript"
+  },
+  {
+    "value": "import { ExchangeInterval, ExchangePair } from \"../repositories/exchange.port\";\r\nexport interface CandleProps {\r\n    openAt: Date;\r\n    closeAt: Date;\r\n    open: number;\r\n    close: number;\r\n    high: number;\r\n    low: number;\r\n    volume: number;\r\n    exchange: string;\r\n    pair: ExchangePair;\r\n    interval: ExchangeInterval;\r\n}\r\n",
+    "filename": "file:///node_modules/yieldfinity/domain/port/entities/candle.port.d.ts",
+    "language": "typescript"
+  },
+  {
+    "value": "import { CustomTrigger } from \"../../entities/triggers/custom.trigger\";\r\n/**\r\n * Trigger set\r\n * @param triggers: An array of custom indicator triggers\r\n */\r\nexport interface CustomTriggerFlowProps {\r\n    triggers: CustomTrigger[];\r\n}\r\n",
+    "filename": "file:///node_modules/yieldfinity/domain/port/entities/custom-trigger-flow.port.d.ts",
+    "language": "typescript"
+  },
+  {
+    "value": "export * from './indicators';\r\nexport * from './orders';\r\nexport * from './candle.port';\r\nexport * from './custom-trigger-flow.port';\r\nexport * from './indicator.port';\r\nexport * from './strategy.port';\r\nexport * from './trigger-flow.port';\r\n",
+    "filename": "file:///node_modules/yieldfinity/domain/port/entities/index.d.ts",
+    "language": "typescript"
+  },
+  {
+    "value": "import { IndicatorMethodParametersMapperInterface } from \"../mappers/indicator-method-parameters-mapper.port\";\r\nimport { ATRIndicator, ATRIndicatorOutput, ATRIndicatorInput, ATRIndicatorParameters } from \"./indicators/atr.port\";\r\nimport { EMAIndicator, EMAIndicatorOutput, EMAIndicatorInput, EMAIndicatorParameters } from \"./indicators/ema.port\";\r\nimport { MACDIndicator, MACDIndicatorOutput, MACDIndicatorInput, MACDIndicatorParameters } from \"./indicators/macd.port\";\r\nimport { RSIIndicator, RSIIndicatorOutput, RSIIndicatorInput, RSIIndicatorParameters } from \"./indicators/rsi.port\";\r\nimport { SMAIndicator, SMAIndicatorOutput, SMAIndicatorInput, SMAIndicatorParameters } from \"./indicators/sma.port\";\r\nimport { PriceIndicator, PriceIndicatorInput, PriceIndicatorOutput, PriceIndicatorParameters } from \"./indicators/price.port\";\r\nexport declare const IndicatorNames: readonly [\"sma\", \"ema\", \"rsi\", \"macd\", \"bearish\", \"bullish\", \"atr\", \"price\"];\r\nexport declare type IndicatorsName = typeof IndicatorNames[number];\r\nexport declare type IndicatorProps = SMAIndicator | EMAIndicator | RSIIndicator | MACDIndicator | ATRIndicator | PriceIndicator;\r\nexport declare type IndicatorParameters = SMAIndicatorParameters | EMAIndicatorParameters | RSIIndicatorParameters | MACDIndicatorParameters | ATRIndicatorParameters | PriceIndicatorParameters;\r\nexport declare type IndicatorInput = SMAIndicatorInput | EMAIndicatorInput | RSIIndicatorInput | MACDIndicatorInput | ATRIndicatorInput | PriceIndicatorInput;\r\nexport declare type IndicatorOutput = SMAIndicatorOutput | EMAIndicatorOutput | RSIIndicatorOutput | MACDIndicatorOutput | ATRIndicatorOutput | PriceIndicatorOutput;\r\nexport interface Values {\r\n    values: number[];\r\n}\r\nexport interface IndicatorDependencies {\r\n    mapper: IndicatorMethodParametersMapperInterface;\r\n}\r\n",
+    "filename": "file:///node_modules/yieldfinity/domain/port/entities/indicator.port.d.ts",
+    "language": "typescript"
+  },
+  {
+    "value": "import { Position } from \"../order/position.port\";\r\nexport interface ATRIndicatorParameters {\r\n    period: number;\r\n}\r\nexport interface ATRIndicatorInput {\r\n    low: number;\r\n    high: number;\r\n    close: number;\r\n}\r\nexport declare type ATRIndicatorOutput = number;\r\nexport interface ATRMethod {\r\n    (prices: ATRIndicatorInput): ATRIndicatorOutput;\r\n}\r\nexport interface ATRIndicator {\r\n    name: \"atr\";\r\n    method: ATRMethod;\r\n    parameters: ATRIndicatorParameters;\r\n}\r\nexport declare type ATRIndicatorTriggerValidator = (output: ATRIndicatorOutput) => Position[];\r\n",
+    "filename": "file:///node_modules/yieldfinity/domain/port/entities/indicator/atr.port.d.ts",
+    "language": "typescript"
+  },
+  {
+    "value": "import { Position } from \"../order/position.port\";\r\nexport interface EMAIndicatorParameters {\r\n    period: number;\r\n}\r\nexport declare type EMAIndicatorOutput = number;\r\nexport declare type EMAIndicatorInput = number;\r\nexport interface EMAMethod {\r\n    (price: EMAIndicatorInput): EMAIndicatorOutput;\r\n}\r\nexport interface EMAIndicator {\r\n    name: \"ema\";\r\n    method: EMAMethod;\r\n    parameters: EMAIndicatorParameters;\r\n}\r\nexport declare type EMAIndicatorTriggerValidator = (output: EMAIndicatorOutput) => Position[];\r\n",
+    "filename": "file:///node_modules/yieldfinity/domain/port/entities/indicator/ema.port.d.ts",
+    "language": "typescript"
+  },
+  {
+    "value": "export * from './triggers';\r\nexport * from './atr.port';\r\nexport * from './ema.port';\r\nexport * from './macd.port';\r\nexport * from './price.port';\r\nexport * from './rsi.port';\r\nexport * from './sma.port';\r\n",
+    "filename": "file:///node_modules/yieldfinity/domain/port/entities/indicator/index.d.ts",
+    "language": "typescript"
+  },
+  {
+    "value": "import { Position } from \"../order/position.port\";\r\nexport interface MACDIndicatorParameters {\r\n    SimpleMAOscillator: boolean;\r\n    SimpleMASignal: boolean;\r\n    fastPeriod: number;\r\n    slowPeriod: number;\r\n    signalPeriod: number;\r\n}\r\nexport declare type MACDIndicatorOutput = {\r\n    MACD?: number;\r\n    signal?: number;\r\n    histogram?: number;\r\n};\r\nexport declare type MACDIndicatorInput = number;\r\nexport interface MACDMethod {\r\n    (price: MACDIndicatorInput): MACDIndicatorOutput;\r\n}\r\nexport interface MACDIndicator {\r\n    name: \"macd\";\r\n    method: MACDMethod;\r\n    parameters: MACDIndicatorParameters;\r\n}\r\nexport declare type MACDIndicatorTriggerValidator = (output: MACDIndicatorOutput) => Position[];\r\n",
+    "filename": "file:///node_modules/yieldfinity/domain/port/entities/indicator/macd.port.d.ts",
+    "language": "typescript"
+  },
+  {
+    "value": "import { Position } from \"../order/position.port\";\r\nexport declare type PriceIndicatorMode = \"high\" | \"low\" | \"open\" | \"close\";\r\nexport interface PriceIndicatorParameters {\r\n    mode: PriceIndicatorMode;\r\n}\r\nexport declare type PriceIndicatorInput = number;\r\nexport declare type PriceIndicatorOutput = number;\r\nexport interface PriceMethod {\r\n    (prices: PriceIndicatorInput): PriceIndicatorOutput;\r\n}\r\nexport interface PriceIndicator {\r\n    name: \"price\";\r\n    method: PriceMethod;\r\n    parameters: PriceIndicatorParameters;\r\n}\r\nexport declare type PriceIndicatorTriggerValidator = (output: PriceIndicatorOutput) => Position[];\r\n",
+    "filename": "file:///node_modules/yieldfinity/domain/port/entities/indicator/price.port.d.ts",
+    "language": "typescript"
+  },
+  {
+    "value": "import { Position } from \"../order/position.port\";\r\nexport interface RSIIndicatorParameters {\r\n    period: number;\r\n}\r\nexport declare type RSIIndicatorOutput = number;\r\nexport declare type RSIIndicatorInput = number;\r\nexport interface RSIMethod {\r\n    (price: RSIIndicatorInput): RSIIndicatorOutput;\r\n}\r\nexport interface RSIIndicator {\r\n    name: \"rsi\";\r\n    method: RSIMethod;\r\n    parameters: RSIIndicatorParameters;\r\n}\r\nexport declare type RSIIndicatorTriggerValidator = (output: RSIIndicatorOutput) => Position[];\r\n",
+    "filename": "file:///node_modules/yieldfinity/domain/port/entities/indicator/rsi.port.d.ts",
+    "language": "typescript"
+  },
+  {
+    "value": "import { Position } from \"../order/position.port\";\r\nexport interface SMAIndicatorParameters {\r\n    period: number;\r\n}\r\nexport declare type SMAIndicatorOutput = number;\r\nexport declare type SMAIndicatorInput = number;\r\nexport interface SMAMethod {\r\n    (price: SMAIndicatorInput): SMAIndicatorOutput;\r\n}\r\nexport interface SMAIndicator {\r\n    name: \"sma\";\r\n    method: SMAMethod;\r\n    parameters: SMAIndicatorParameters;\r\n}\r\nexport declare type SMAIndicatorTriggerValidator = (output: SMAIndicatorOutput) => Position[];\r\n",
+    "filename": "file:///node_modules/yieldfinity/domain/port/entities/indicator/sma.port.d.ts",
+    "language": "typescript"
+  },
+  {
+    "value": "import { IndicatorTriggerProps } from \"./indicator-trigger.port\";\r\nexport interface ATRTriggerProps extends IndicatorTriggerProps {\r\n    field: \"value\";\r\n}\r\n",
+    "filename": "file:///node_modules/yieldfinity/domain/port/entities/indicator/triggers/atr.trigger.port.d.ts",
+    "language": "typescript"
+  },
+  {
+    "value": "import { Position } from \"../../order/position.port\";\r\nexport interface CustomTriggerParameters {\r\n    [key: string]: any;\r\n}\r\nexport interface CustomTriggerProps {\r\n    parameters: CustomTriggerParameters;\r\n    method: (parameters: CustomTriggerParameters) => Position | null | undefined | false;\r\n}\r\n",
+    "filename": "file:///node_modules/yieldfinity/domain/port/entities/indicator/triggers/custom.trigger.port.d.ts",
+    "language": "typescript"
+  },
+  {
+    "value": "import { IndicatorTriggerProps } from \"./indicator-trigger.port\";\r\nexport interface EMATriggerProps extends IndicatorTriggerProps {\r\n    field: \"value\";\r\n}\r\n",
+    "filename": "file:///node_modules/yieldfinity/domain/port/entities/indicator/triggers/ema.trigger.port.d.ts",
+    "language": "typescript"
+  },
+  {
+    "value": "export * from './atr.trigger.port';\r\nexport * from './custom.trigger.port';\r\nexport * from './ema.trigger.port';\r\nexport * from './indicator-trigger.port';\r\nexport * from './macd.trigger.port';\r\nexport * from './price.trigger.port';\r\nexport * from './rsi.trigger.port';\r\nexport * from './sma.trigger.port';\r\n",
+    "filename": "file:///node_modules/yieldfinity/domain/port/entities/indicator/triggers/index.d.ts",
+    "language": "typescript"
+  },
+  {
+    "value": "import { Indicator } from \"../../../../entities/indicator\";\r\nexport declare type Comparer = \"<\" | \">\" | \"<=\" | \">=\" | \"=\";\r\nexport declare type ComparerMode = \"relative\" | \"absolute\" | \"percentage\";\r\nexport interface IndicatorTriggerProps {\r\n    indicator: Indicator;\r\n    field: string;\r\n    triggerField?: string;\r\n    triggerValue: number;\r\n    tMinus?: number;\r\n    comparer: Comparer;\r\n    mode: ComparerMode;\r\n}\r\n",
+    "filename": "file:///node_modules/yieldfinity/domain/port/entities/indicator/triggers/indicator-trigger.port.d.ts",
+    "language": "typescript"
+  },
+  {
+    "value": "import { IndicatorTriggerProps } from \"./indicator-trigger.port\";\r\nexport interface MACDTriggerProps extends IndicatorTriggerProps {\r\n    field: \"MACD\" | \"signal\" | \"histogram\";\r\n}\r\n",
+    "filename": "file:///node_modules/yieldfinity/domain/port/entities/indicator/triggers/macd.trigger.port.d.ts",
+    "language": "typescript"
+  },
+  {
+    "value": "import { IndicatorTriggerProps } from \"./indicator-trigger.port\";\r\nexport interface PriceTriggerProps extends IndicatorTriggerProps {\r\n    field: \"value\";\r\n}\r\n",
+    "filename": "file:///node_modules/yieldfinity/domain/port/entities/indicator/triggers/price.trigger.port.d.ts",
+    "language": "typescript"
+  },
+  {
+    "value": "import { IndicatorTriggerProps } from \"./indicator-trigger.port\";\r\nexport interface RSITriggerProps extends IndicatorTriggerProps {\r\n    field: \"value\";\r\n}\r\n",
+    "filename": "file:///node_modules/yieldfinity/domain/port/entities/indicator/triggers/rsi.trigger.port.d.ts",
+    "language": "typescript"
+  },
+  {
+    "value": "import { IndicatorTriggerProps } from \"./indicator-trigger.port\";\r\nexport interface SMATriggerProps extends IndicatorTriggerProps {\r\n    field: \"value\";\r\n}\r\n",
+    "filename": "file:///node_modules/yieldfinity/domain/port/entities/indicator/triggers/sma.trigger.port.d.ts",
+    "language": "typescript"
+  },
+  {
+    "value": "import { Position } from \"../orders/position.port\";\r\nexport interface ATRIndicatorParameters {\r\n    period: number;\r\n}\r\nexport interface ATRIndicatorInput {\r\n    low: number;\r\n    high: number;\r\n    close: number;\r\n}\r\nexport declare type ATRIndicatorOutput = number;\r\nexport interface ATRMethod {\r\n    (prices: ATRIndicatorInput): ATRIndicatorOutput;\r\n}\r\nexport interface ATRIndicator {\r\n    name: \"atr\";\r\n    method: ATRMethod;\r\n    parameters: ATRIndicatorParameters;\r\n}\r\nexport declare type ATRIndicatorTriggerValidator = (output: ATRIndicatorOutput) => Position[];\r\n",
+    "filename": "file:///node_modules/yieldfinity/domain/port/entities/indicators/atr.port.d.ts",
+    "language": "typescript"
+  },
+  {
+    "value": "import { Position } from \"../orders/position.port\";\r\nexport interface EMAIndicatorParameters {\r\n    period: number;\r\n}\r\nexport declare type EMAIndicatorOutput = number;\r\nexport declare type EMAIndicatorInput = number;\r\nexport interface EMAMethod {\r\n    (price: EMAIndicatorInput): EMAIndicatorOutput;\r\n}\r\nexport interface EMAIndicator {\r\n    name: \"ema\";\r\n    method: EMAMethod;\r\n    parameters: EMAIndicatorParameters;\r\n}\r\nexport declare type EMAIndicatorTriggerValidator = (output: EMAIndicatorOutput) => Position[];\r\n",
+    "filename": "file:///node_modules/yieldfinity/domain/port/entities/indicators/ema.port.d.ts",
+    "language": "typescript"
+  },
+  {
+    "value": "export * from './triggers';\r\nexport * from './atr.port';\r\nexport * from './ema.port';\r\nexport * from './macd.port';\r\nexport * from './price.port';\r\nexport * from './rsi.port';\r\nexport * from './sma.port';\r\n",
+    "filename": "file:///node_modules/yieldfinity/domain/port/entities/indicators/index.d.ts",
+    "language": "typescript"
+  },
+  {
+    "value": "import { Position } from \"../orders/position.port\";\r\nexport interface MACDIndicatorParameters {\r\n    SimpleMAOscillator: boolean;\r\n    SimpleMASignal: boolean;\r\n    fastPeriod: number;\r\n    slowPeriod: number;\r\n    signalPeriod: number;\r\n}\r\nexport declare type MACDIndicatorOutput = {\r\n    MACD?: number;\r\n    signal?: number;\r\n    histogram?: number;\r\n};\r\nexport declare type MACDIndicatorInput = number;\r\nexport interface MACDMethod {\r\n    (price: MACDIndicatorInput): MACDIndicatorOutput;\r\n}\r\nexport interface MACDIndicator {\r\n    name: \"macd\";\r\n    method: MACDMethod;\r\n    parameters: MACDIndicatorParameters;\r\n}\r\nexport declare type MACDIndicatorTriggerValidator = (output: MACDIndicatorOutput) => Position[];\r\n",
+    "filename": "file:///node_modules/yieldfinity/domain/port/entities/indicators/macd.port.d.ts",
+    "language": "typescript"
+  },
+  {
+    "value": "import { Position } from \"../orders/position.port\";\r\nexport declare type PriceIndicatorMode = \"high\" | \"low\" | \"open\" | \"close\";\r\nexport interface PriceIndicatorParameters {\r\n    mode: PriceIndicatorMode;\r\n}\r\nexport declare type PriceIndicatorInput = number;\r\nexport declare type PriceIndicatorOutput = number;\r\nexport interface PriceMethod {\r\n    (prices: PriceIndicatorInput): PriceIndicatorOutput;\r\n}\r\nexport interface PriceIndicator {\r\n    name: \"price\";\r\n    method: PriceMethod;\r\n    parameters: PriceIndicatorParameters;\r\n}\r\nexport declare type PriceIndicatorTriggerValidator = (output: PriceIndicatorOutput) => Position[];\r\n",
+    "filename": "file:///node_modules/yieldfinity/domain/port/entities/indicators/price.port.d.ts",
+    "language": "typescript"
+  },
+  {
+    "value": "import { Position } from \"../orders/position.port\";\r\nexport interface RSIIndicatorParameters {\r\n    period: number;\r\n}\r\nexport declare type RSIIndicatorOutput = number;\r\nexport declare type RSIIndicatorInput = number;\r\nexport interface RSIMethod {\r\n    (price: RSIIndicatorInput): RSIIndicatorOutput;\r\n}\r\nexport interface RSIIndicator {\r\n    name: \"rsi\";\r\n    method: RSIMethod;\r\n    parameters: RSIIndicatorParameters;\r\n}\r\nexport declare type RSIIndicatorTriggerValidator = (output: RSIIndicatorOutput) => Position[];\r\n",
+    "filename": "file:///node_modules/yieldfinity/domain/port/entities/indicators/rsi.port.d.ts",
+    "language": "typescript"
+  },
+  {
+    "value": "import { Position } from \"../orders/position.port\";\r\nexport interface SMAIndicatorParameters {\r\n    period: number;\r\n}\r\nexport declare type SMAIndicatorOutput = number;\r\nexport declare type SMAIndicatorInput = number;\r\nexport interface SMAMethod {\r\n    (price: SMAIndicatorInput): SMAIndicatorOutput;\r\n}\r\nexport interface SMAIndicator {\r\n    name: \"sma\";\r\n    method: SMAMethod;\r\n    parameters: SMAIndicatorParameters;\r\n}\r\nexport declare type SMAIndicatorTriggerValidator = (output: SMAIndicatorOutput) => Position[];\r\n",
+    "filename": "file:///node_modules/yieldfinity/domain/port/entities/indicators/sma.port.d.ts",
+    "language": "typescript"
+  },
+  {
+    "value": "import { IndicatorTriggerProps } from \"./indicator-trigger.port\";\r\nexport interface ATRTriggerProps extends IndicatorTriggerProps {\r\n    field: \"value\";\r\n}\r\n",
+    "filename": "file:///node_modules/yieldfinity/domain/port/entities/indicators/triggers/atr.trigger.port.d.ts",
+    "language": "typescript"
+  },
+  {
+    "value": "import { Position } from \"../../orders/position.port\";\r\nexport interface CustomTriggerParameters {\r\n    [key: string]: any;\r\n}\r\nexport interface CustomTriggerProps {\r\n    parameters: CustomTriggerParameters;\r\n    method: (parameters: CustomTriggerParameters) => Position | null | undefined | false;\r\n}\r\n",
+    "filename": "file:///node_modules/yieldfinity/domain/port/entities/indicators/triggers/custom.trigger.port.d.ts",
+    "language": "typescript"
+  },
+  {
+    "value": "import { IndicatorTriggerProps } from \"./indicator-trigger.port\";\r\nexport interface EMATriggerProps extends IndicatorTriggerProps {\r\n    field: \"value\";\r\n}\r\n",
+    "filename": "file:///node_modules/yieldfinity/domain/port/entities/indicators/triggers/ema.trigger.port.d.ts",
+    "language": "typescript"
+  },
+  {
+    "value": "export * from './atr.trigger.port';\r\nexport * from './custom.trigger.port';\r\nexport * from './ema.trigger.port';\r\nexport * from './indicator-trigger.port';\r\nexport * from './macd.trigger.port';\r\nexport * from './price.trigger.port';\r\nexport * from './rsi.trigger.port';\r\nexport * from './sma.trigger.port';\r\n",
+    "filename": "file:///node_modules/yieldfinity/domain/port/entities/indicators/triggers/index.d.ts",
+    "language": "typescript"
+  },
+  {
+    "value": "import { Indicator } from \"../../../../entities/indicator\";\r\nexport declare type Comparer = \"<\" | \">\" | \"<=\" | \">=\" | \"=\";\r\nexport declare type ComparerMode = \"relative\" | \"absolute\" | \"percentage\";\r\nexport interface IndicatorTriggerProps {\r\n    indicator: Indicator;\r\n    field: string;\r\n    triggerField?: string;\r\n    triggerValue: number;\r\n    tMinus?: number;\r\n    comparer: Comparer;\r\n    mode: ComparerMode;\r\n}\r\n",
+    "filename": "file:///node_modules/yieldfinity/domain/port/entities/indicators/triggers/indicator-trigger.port.d.ts",
+    "language": "typescript"
+  },
+  {
+    "value": "import { IndicatorTriggerProps } from \"./indicator-trigger.port\";\r\nexport interface MACDTriggerProps extends IndicatorTriggerProps {\r\n    field: \"MACD\" | \"signal\" | \"histogram\";\r\n}\r\n",
+    "filename": "file:///node_modules/yieldfinity/domain/port/entities/indicators/triggers/macd.trigger.port.d.ts",
+    "language": "typescript"
+  },
+  {
+    "value": "import { IndicatorTriggerProps } from \"./indicator-trigger.port\";\r\nexport interface PriceTriggerProps extends IndicatorTriggerProps {\r\n    field: \"value\";\r\n}\r\n",
+    "filename": "file:///node_modules/yieldfinity/domain/port/entities/indicators/triggers/price.trigger.port.d.ts",
+    "language": "typescript"
+  },
+  {
+    "value": "import { IndicatorTriggerProps } from \"./indicator-trigger.port\";\r\nexport interface RSITriggerProps extends IndicatorTriggerProps {\r\n    field: \"value\";\r\n}\r\n",
+    "filename": "file:///node_modules/yieldfinity/domain/port/entities/indicators/triggers/rsi.trigger.port.d.ts",
+    "language": "typescript"
+  },
+  {
+    "value": "import { IndicatorTriggerProps } from \"./indicator-trigger.port\";\r\nexport interface SMATriggerProps extends IndicatorTriggerProps {\r\n    field: \"value\";\r\n}\r\n",
+    "filename": "file:///node_modules/yieldfinity/domain/port/entities/indicators/triggers/sma.trigger.port.d.ts",
+    "language": "typescript"
+  },
+  {
+    "value": "import { ExchangePair } from \"../../repositories/exchange.port\";\r\nexport interface MarketOrder {\r\n    type: \"market\";\r\n}\r\nexport interface LimitOrder {\r\n    type: \"market\";\r\n    price: number;\r\n}\r\nexport interface StopMarketOrder {\r\n    type: \"stopMarket\";\r\n    stopPrice: number;\r\n}\r\nexport interface StopLimitOrder {\r\n    type: \"stopMarket\";\r\n    stopPrice: number;\r\n    price: number;\r\n}\r\nexport declare type FutureOrderType = MarketOrder | LimitOrder | StopMarketOrder | StopLimitOrder;\r\nexport declare type FutureOrderSide = \"long\" | \"short\";\r\nexport interface FutureOrderState {\r\n    openedAt: Date;\r\n    closedAt: Date;\r\n    fee: number;\r\n    profit: number;\r\n    leverage: number;\r\n}\r\nexport interface FutureOrderProps {\r\n    pair: ExchangePair;\r\n    side: FutureOrderSide;\r\n    size: number;\r\n    order: FutureOrderType;\r\n    state: FutureOrderState;\r\n}\r\n",
+    "filename": "file:///node_modules/yieldfinity/domain/port/entities/order/future-order.port.d.ts",
+    "language": "typescript"
+  },
+  {
+    "value": "export * from './future-order.port';\r\nexport * from './order.port';\r\nexport * from './position.port';\r\nexport * from './stop-loss-take-profit.port';\r\n",
+    "filename": "file:///node_modules/yieldfinity/domain/port/entities/order/index.d.ts",
+    "language": "typescript"
+  },
+  {
+    "value": "import { ExchangePair } from \"../../repositories/exchange.port\";\r\nimport { StopLoss } from \"../../../entities/orders/stop-loss\";\r\nimport { TakeProfit } from \"../../../entities/orders/take-profit\";\r\nexport declare type OrderSide = \"ask\" | \"bid\";\r\nexport interface OrderState {\r\n    openAt: Date | null;\r\n    closeAt: Date | null;\r\n    fee: number | null;\r\n    profit: number | null;\r\n    pnl: number | null;\r\n}\r\nexport interface OrderParameters {\r\n    side: OrderSide;\r\n    pair: ExchangePair;\r\n    quantity: number;\r\n    price: number | \"market\";\r\n    stopLoss: StopLoss;\r\n    takeProfit: TakeProfit;\r\n}\r\n",
+    "filename": "file:///node_modules/yieldfinity/domain/port/entities/order/order.port.d.ts",
+    "language": "typescript"
+  },
+  {
+    "value": "import { Order } from \"../../../entities/orders/order\";\r\nexport declare type Position = Order;\r\n",
+    "filename": "file:///node_modules/yieldfinity/domain/port/entities/order/position.port.d.ts",
+    "language": "typescript"
+  },
+  {
+    "value": "/**\r\n * Stop loss / Take profit\r\n * @param value: The value that will trigger the order\r\n * @param mode: If \"number\", will compare in absolute values, if \"percentage\" will compare in relative value\r\n * @param reference: Either use the price as reference or the profit and loss ratio\r\n * @param amount: The amount of the asset you want to buy / sell (always 100% for now)\r\n */\r\nexport interface StopLossTakeProfitProps {\r\n    value: number;\r\n    reference: \"price\" | \"pnl\";\r\n}\r\n",
+    "filename": "file:///node_modules/yieldfinity/domain/port/entities/order/stop-loss-take-profit.port.d.ts",
+    "language": "typescript"
+  },
+  {
+    "value": "import { ExchangePair } from \"../../repositories/exchange.port\";\r\nexport interface MarketOrder {\r\n    type: \"market\";\r\n}\r\nexport interface LimitOrder {\r\n    type: \"market\";\r\n    price: number;\r\n}\r\nexport interface StopMarketOrder {\r\n    type: \"stopMarket\";\r\n    stopPrice: number;\r\n}\r\nexport interface StopLimitOrder {\r\n    type: \"stopMarket\";\r\n    stopPrice: number;\r\n    price: number;\r\n}\r\nexport declare type FutureOrderType = MarketOrder | LimitOrder | StopMarketOrder | StopLimitOrder;\r\nexport declare type FutureOrderSide = \"long\" | \"short\";\r\nexport interface FutureOrderState {\r\n    openedAt: Date;\r\n    closedAt: Date;\r\n    fee: number;\r\n    profit: number;\r\n    leverage: number;\r\n}\r\nexport interface FutureOrderProps {\r\n    pair: ExchangePair;\r\n    side: FutureOrderSide;\r\n    size: number;\r\n    order: FutureOrderType;\r\n    state: FutureOrderState;\r\n}\r\n",
+    "filename": "file:///node_modules/yieldfinity/domain/port/entities/orders/future-order.port.d.ts",
+    "language": "typescript"
+  },
+  {
+    "value": "export * from './future-order.port';\r\nexport * from './order.port';\r\nexport * from './position.port';\r\nexport * from './stop-loss-take-profit.port';\r\n",
+    "filename": "file:///node_modules/yieldfinity/domain/port/entities/orders/index.d.ts",
+    "language": "typescript"
+  },
+  {
+    "value": "import { ExchangePair } from \"../../repositories/exchange.port\";\r\nimport { StopLoss } from \"../../../entities/orders/stop-loss\";\r\nimport { TakeProfit } from \"../../../entities/orders/take-profit\";\r\nexport declare type OrderSide = \"ask\" | \"bid\";\r\nexport interface OrderState {\r\n    openAt: Date | null;\r\n    closeAt: Date | null;\r\n    fee: number | null;\r\n    profit: number | null;\r\n    pnl: number | null;\r\n}\r\nexport interface OrderParameters {\r\n    side: OrderSide;\r\n    pair: ExchangePair;\r\n    quantity: number;\r\n    price: number | \"market\";\r\n    stopLoss: StopLoss;\r\n    takeProfit: TakeProfit;\r\n}\r\n",
+    "filename": "file:///node_modules/yieldfinity/domain/port/entities/orders/order.port.d.ts",
+    "language": "typescript"
+  },
+  {
+    "value": "import { Order } from \"../../../entities/orders/order\";\r\nexport declare type Position = Order;\r\n",
+    "filename": "file:///node_modules/yieldfinity/domain/port/entities/orders/position.port.d.ts",
+    "language": "typescript"
+  },
+  {
+    "value": "/**\r\n * Stop loss / Take profit\r\n * @param value: The value that will trigger the order\r\n * @param mode: If \"number\", will compare in absolute values, if \"percentage\" will compare in relative value\r\n * @param reference: Either use the price as reference or the profit and loss ratio\r\n * @param amount: The amount of the asset you want to buy / sell (always 100% for now)\r\n */\r\nexport interface StopLossTakeProfitProps {\r\n    value: number;\r\n    reference: \"price\" | \"pnl\";\r\n}\r\n",
+    "filename": "file:///node_modules/yieldfinity/domain/port/entities/orders/stop-loss-take-profit.port.d.ts",
+    "language": "typescript"
+  },
+  {
+    "value": "import { CustomTriggerFlow } from \"../../entities/custom-trigger-flow\";\r\nimport { Indicator } from \"../../entities/indicator\";\r\nimport { TriggerFlow } from \"../../entities/trigger-flow\";\r\nimport { ExchangeRepository } from \"../repositories/exchange.port\";\r\nexport interface StrategyProps {\r\n    indicators: Indicator[];\r\n    triggerFlow: TriggerFlow | CustomTriggerFlow;\r\n    exchanges?: ExchangeRepository[];\r\n}\r\n",
+    "filename": "file:///node_modules/yieldfinity/domain/port/entities/strategy.port.d.ts",
+    "language": "typescript"
+  },
+  {
+    "value": "import { IndicatorTrigger } from \"../../entities/triggers/indicator-trigger\";\r\nimport { Position } from \"./orders/position.port\";\r\n/**\r\n * Trigger set\r\n * @param triggers: An array of indicator triggers\r\n * @param operator: If \"and\", all triggers must be set off for the corresponding order to be executed. If \"or\", any trigger within the set will execute the order\r\n */\r\nexport interface TriggerSet {\r\n    triggers: IndicatorTrigger[];\r\n    operator: \"and\" | \"or\";\r\n    position: Position;\r\n}\r\nexport interface TriggerFlowProps {\r\n    flow: TriggerSet[];\r\n}\r\n",
+    "filename": "file:///node_modules/yieldfinity/domain/port/entities/trigger-flow.port.d.ts",
+    "language": "typescript"
+  },
+  {
+    "value": "export * from './indicators.factory.port';\r\n",
+    "filename": "file:///node_modules/yieldfinity/domain/port/factories/index.d.ts",
+    "language": "typescript"
+  },
+  {
+    "value": "import { Indicator } from \"../../entities/indicator\";\r\nimport { ATRIndicatorParameters } from \"../entities/indicators/atr.port\";\r\nimport { EMAIndicatorParameters } from \"../entities/indicators/ema.port\";\r\nimport { MACDIndicatorParameters } from \"../entities/indicators/macd.port\";\r\nimport { PriceIndicatorParameters } from \"../entities/indicators/price.port\";\r\nimport { RSIIndicatorParameters } from \"../entities/indicators/rsi.port\";\r\nimport { SMAIndicatorParameters } from \"../entities/indicators/sma.port\";\r\nimport { IndicatorMethodParametersMapperInterface } from \"../mappers/indicator-method-parameters-mapper.port\";\r\nexport interface IndicatorsFactoryProps {\r\n    mapper: IndicatorMethodParametersMapperInterface;\r\n    uuid(): string;\r\n}\r\nexport interface IndicatorTriggersMap {\r\n    [indicator: string]: string[];\r\n}\r\nexport interface IndicatorsFactoryInterface {\r\n    sma(parameters: SMAIndicatorParameters): Indicator;\r\n    ema(parameters: EMAIndicatorParameters): Indicator;\r\n    rsi(parameters: RSIIndicatorParameters): Indicator;\r\n    macd(parameters: MACDIndicatorParameters): Indicator;\r\n    atr(parameters: ATRIndicatorParameters): Indicator;\r\n    price(parameters: PriceIndicatorParameters): Indicator;\r\n    triggers: IndicatorTriggersMap;\r\n}\r\n",
+    "filename": "file:///node_modules/yieldfinity/domain/port/factories/indicators.factory.port.d.ts",
+    "language": "typescript"
+  },
+  {
+    "value": "export * from './entities';\r\nexport * from './factories';\r\nexport * from './mappers';\r\nexport * from './repositories';\r\nexport * from './services';\r\n",
+    "filename": "file:///node_modules/yieldfinity/domain/port/index.d.ts",
+    "language": "typescript"
+  },
+  {
+    "value": "export * from './indicator-method-parameters-mapper.port';\r\n",
+    "filename": "file:///node_modules/yieldfinity/domain/port/mappers/index.d.ts",
+    "language": "typescript"
+  },
+  {
+    "value": "import { Candle } from \"../../entities/candle\";\r\nimport { ATRIndicatorInput } from \"../entities/indicators/atr.port\";\r\nimport { EMAIndicatorInput } from \"../entities/indicators/ema.port\";\r\nimport { MACDIndicatorInput } from \"../entities/indicators/macd.port\";\r\nimport { PriceIndicatorInput, PriceIndicatorParameters } from \"../entities/indicators/price.port\";\r\nimport { RSIIndicatorInput } from \"../entities/indicators/rsi.port\";\r\nimport { SMAIndicatorInput } from \"../entities/indicators/sma.port\";\r\nexport interface IndicatorMethodParametersMapperInterface {\r\n    sma(candle: Candle): SMAIndicatorInput;\r\n    ema(candle: Candle): EMAIndicatorInput;\r\n    rsi(candle: Candle): RSIIndicatorInput;\r\n    macd(candle: Candle): MACDIndicatorInput;\r\n    atr(candle: Candle): ATRIndicatorInput;\r\n    price(candle: Candle, parameters: PriceIndicatorParameters): PriceIndicatorInput;\r\n}\r\n",
+    "filename": "file:///node_modules/yieldfinity/domain/port/mappers/indicator-method-parameters-mapper.port.d.ts",
+    "language": "typescript"
+  },
+  {
+    "value": "import { Candle } from \"../../entities/candle\";\r\nexport declare type ExchangeInterval = \"12h\" | \"15m\" | \"1d\" | \"1h\" | \"1m\" | \"2h\" | \"30m\" | \"3m\" | \"4h\" | \"5m\" | \"6h\" | \"8h\";\r\nexport declare type ExchangePair = \"1INCHBTC\" | \"1INCHBUSD\" | \"1INCHDOWNUSDT\" | \"1INCHUPUSDT\" | \"1INCHUSDT\" | \"AAVEBKRW\" | \"AAVEBNB\" | \"AAVEBTC\" | \"AAVEBUSD\" | \"AAVEDOWNUSDT\" | \"AAVEETH\" | \"AAVEUPUSDT\" | \"AAVEUSDT\" | \"ACMBTC\" | \"ACMBUSD\" | \"ACMUSDT\" | \"ADAAUD\" | \"ADABKRW\" | \"ADABNB\" | \"ADABRL\" | \"ADABTC\" | \"ADABUSD\" | \"ADADOWNUSDT\" | \"ADAETH\" | \"ADAEUR\" | \"ADAGBP\" | \"ADAPAX\" | \"ADARUB\" | \"ADATRY\" | \"ADATUSD\" | \"ADAUPUSDT\" | \"ADAUSDC\" | \"ADAUSDT\" | \"ADXBNB\" | \"ADXBTC\" | \"ADXETH\" | \"AEBNB\" | \"AEBTC\" | \"AEETH\" | \"AERGOBTC\" | \"AERGOBUSD\" | \"AGIBNB\" | \"AGIBTC\" | \"AGIETH\" | \"AIONBNB\" | \"AIONBTC\" | \"AIONBUSD\" | \"AIONETH\" | \"AIONUSDT\" | \"AKROBTC\" | \"AKROUSDT\" | \"ALGOBNB\" | \"ALGOBTC\" | \"ALGOBUSD\" | \"ALGOPAX\" | \"ALGOTUSD\" | \"ALGOUSDC\" | \"ALGOUSDT\" | \"ALICEBTC\" | \"ALICEBUSD\" | \"ALICEUSDT\" | \"ALPHABNB\" | \"ALPHABTC\" | \"ALPHABUSD\" | \"ALPHAUSDT\" | \"AMBBNB\" | \"AMBBTC\" | \"AMBETH\" | \"ANKRBNB\" | \"ANKRBTC\" | \"ANKRPAX\" | \"ANKRTUSD\" | \"ANKRUSDC\" | \"ANKRUSDT\" | \"ANTBNB\" | \"ANTBTC\" | \"ANTBUSD\" | \"ANTUSDT\" | \"APPCBNB\" | \"APPCBTC\" | \"APPCETH\" | \"ARDRBNB\" | \"ARDRBTC\" | \"ARDRETH\" | \"ARDRUSDT\" | \"ARKBTC\" | \"ARKETH\" | \"ARNBTC\" | \"ARNETH\" | \"ARPABNB\" | \"ARPABTC\" | \"ARPAUSDT\" | \"ASRBTC\" | \"ASRUSDT\" | \"ASTBTC\" | \"ASTETH\" | \"ATMBTC\" | \"ATMUSDT\" | \"ATOMBNB\" | \"ATOMBTC\" | \"ATOMBUSD\" | \"ATOMPAX\" | \"ATOMTUSD\" | \"ATOMUSDC\" | \"ATOMUSDT\" | \"AUCTIONBTC\" | \"AUCTIONBUSD\" | \"AUDBUSD\" | \"AUDIOBTC\" | \"AUDIOBUSD\" | \"AUDIOUSDT\" | \"AUDUSDT\" | \"AUTOBTC\" | \"AUTOBUSD\" | \"AUTOUSDT\" | \"AVABNB\" | \"AVABTC\" | \"AVABUSD\" | \"AVAUSDT\" | \"AVAXBNB\" | \"AVAXBTC\" | \"AVAXBUSD\" | \"AVAXEUR\" | \"AVAXTRY\" | \"AVAXUSDT\" | \"AXSBNB\" | \"AXSBTC\" | \"AXSBUSD\" | \"AXSUSDT\" | \"BADGERBTC\" | \"BADGERBUSD\" | \"BADGERUSDT\" | \"BAKEBNB\" | \"BAKEBUSD\" | \"BAKEUSDT\" | \"BALBNB\" | \"BALBTC\" | \"BALBUSD\" | \"BALUSDT\" | \"BANDBNB\" | \"BANDBTC\" | \"BANDBUSD\" | \"BANDUSDT\" | \"BARBTC\" | \"BARBUSD\" | \"BARUSDT\" | \"BATBNB\" | \"BATBTC\" | \"BATBUSD\" | \"BATETH\" | \"BATPAX\" | \"BATTUSD\" | \"BATUSDC\" | \"BATUSDT\" | \"BCCBNB\" | \"BCCBTC\" | \"BCCETH\" | \"BCCUSDT\" | \"BCDBTC\" | \"BCDETH\" | \"BCHABCBTC\" | \"BCHABCBUSD\" | \"BCHABCPAX\" | \"BCHABCTUSD\" | \"BCHABCUSDC\" | \"BCHABCUSDT\" | \"BCHABUSD\" | \"BCHBNB\" | \"BCHBTC\" | \"BCHBUSD\" | \"BCHDOWNUSDT\" | \"BCHEUR\" | \"BCHPAX\" | \"BCHSVBTC\" | \"BCHSVPAX\" | \"BCHSVTUSD\" | \"BCHSVUSDC\" | \"BCHSVUSDT\" | \"BCHTUSD\" | \"BCHUPUSDT\" | \"BCHUSDC\" | \"BCHUSDT\" | \"BCNBNB\" | \"BCNBTC\" | \"BCNETH\" | \"BCPTBNB\" | \"BCPTBTC\" | \"BCPTETH\" | \"BCPTPAX\" | \"BCPTTUSD\" | \"BCPTUSDC\" | \"BEAMBNB\" | \"BEAMBTC\" | \"BEAMUSDT\" | \"BEARBUSD\" | \"BEARUSDT\" | \"BELBNB\" | \"BELBTC\" | \"BELBUSD\" | \"BELUSDT\" | \"BETHETH\" | \"BGBPUSDC\" | \"BIFIBNB\" | \"BIFIBUSD\" | \"BKRWBUSD\" | \"BKRWUSDT\" | \"BLZBNB\" | \"BLZBTC\" | \"BLZBUSD\" | \"BLZETH\" | \"BLZUSDT\" | \"BNBAUD\" | \"BNBBEARBUSD\" | \"BNBBEARUSDT\" | \"BNBBIDR\" | \"BNBBKRW\" | \"BNBBRL\" | \"BNBBTC\" | \"BNBBULLBUSD\" | \"BNBBULLUSDT\" | \"BNBBUSD\" | \"BNBDAI\" | \"BNBDOWNUSDT\" | \"BNBETH\" | \"BNBEUR\" | \"BNBGBP\" | \"BNBIDRT\" | \"BNBNGN\" | \"BNBPAX\" | \"BNBRUB\" | \"BNBTRY\" | \"BNBTUSD\" | \"BNBUAH\" | \"BNBUPUSDT\" | \"BNBUSDC\" | \"BNBUSDS\" | \"BNBUSDT\" | \"BNBZAR\" | \"BNTBTC\" | \"BNTBUSD\" | \"BNTETH\" | \"BNTUSDT\" | \"BOTBTC\" | \"BOTBUSD\" | \"BQXBTC\" | \"BQXETH\" | \"BRDBNB\" | \"BRDBTC\" | \"BRDETH\" | \"BTCAUD\" | \"BTCBBTC\" | \"BTCBIDR\" | \"BTCBKRW\" | \"BTCBRL\" | \"BTCBUSD\" | \"BTCDAI\" | \"BTCDOWNUSDT\" | \"BTCEUR\" | \"BTCGBP\" | \"BTCIDRT\" | \"BTCNGN\" | \"BTCPAX\" | \"BTCRUB\" | \"BTCSTBTC\" | \"BTCSTBUSD\" | \"BTCSTUSDT\" | \"BTCTRY\" | \"BTCTUSD\" | \"BTCUAH\" | \"BTCUPUSDT\" | \"BTCUSDC\" | \"BTCUSDS\" | \"BTCUSDT\" | \"BTCVAI\" | \"BTCZAR\" | \"BTGBTC\" | \"BTGBUSD\" | \"BTGETH\" | \"BTGUSDT\" | \"BTSBNB\" | \"BTSBTC\" | \"BTSBUSD\" | \"BTSETH\" | \"BTSUSDT\" | \"BTTBNB\" | \"BTTBRL\" | \"BTTBTC\" | \"BTTBUSD\" | \"BTTEUR\" | \"BTTPAX\" | \"BTTTRX\" | \"BTTTRY\" | \"BTTTUSD\" | \"BTTUSDC\" | \"BTTUSDT\" | \"BULLBUSD\" | \"BULLUSDT\" | \"BURGERBNB\" | \"BURGERBUSD\" | \"BURGERUSDT\" | \"BUSDBIDR\" | \"BUSDBKRW\" | \"BUSDBRL\" | \"BUSDBVND\" | \"BUSDDAI\" | \"BUSDIDRT\" | \"BUSDNGN\" | \"BUSDRUB\" | \"BUSDTRY\" | \"BUSDUSDT\" | \"BUSDVAI\" | \"BUSDZAR\" | \"BZRXBNB\" | \"BZRXBTC\" | \"BZRXBUSD\" | \"BZRXUSDT\" | \"CAKEBNB\" | \"CAKEBTC\" | \"CAKEBUSD\" | \"CAKEGBP\" | \"CAKEUSDT\" | \"CDTBTC\" | \"CDTETH\" | \"CELOBTC\" | \"CELOUSDT\" | \"CELRBNB\" | \"CELRBTC\" | \"CELRUSDT\" | \"CFXBTC\" | \"CFXBUSD\" | \"CFXUSDT\" | \"CHATBTC\" | \"CHATETH\" | \"CHRBNB\" | \"CHRBTC\" | \"CHRUSDT\" | \"CHZBNB\" | \"CHZBRL\" | \"CHZBTC\" | \"CHZBUSD\" | \"CHZEUR\" | \"CHZGBP\" | \"CHZTRY\" | \"CHZUSDT\" | \"CKBBTC\" | \"CKBBUSD\" | \"CKBUSDT\" | \"CLOAKBTC\" | \"CLOAKETH\" | \"CMTBNB\" | \"CMTBTC\" | \"CMTETH\" | \"CNDBNB\" | \"CNDBTC\" | \"CNDETH\" | \"COCOSBNB\" | \"COCOSBTC\" | \"COCOSUSDT\" | \"COMPBNB\" | \"COMPBTC\" | \"COMPBUSD\" | \"COMPUSDT\" | \"COSBNB\" | \"COSBTC\" | \"COSUSDT\" | \"COTIBNB\" | \"COTIBTC\" | \"COTIUSDT\" | \"COVERBUSD\" | \"COVERETH\" | \"CREAMBNB\" | \"CREAMBUSD\" | \"CRVBNB\" | \"CRVBTC\" | \"CRVBUSD\" | \"CRVUSDT\" | \"CTKBNB\" | \"CTKBTC\" | \"CTKBUSD\" | \"CTKUSDT\" | \"CTSIBNB\" | \"CTSIBTC\" | \"CTSIBUSD\" | \"CTSIUSDT\" | \"CTXCBNB\" | \"CTXCBTC\" | \"CTXCUSDT\" | \"CVCBNB\" | \"CVCBTC\" | \"CVCETH\" | \"CVCUSDT\" | \"CVPBUSD\" | \"CVPETH\" | \"DAIBNB\" | \"DAIBTC\" | \"DAIBUSD\" | \"DAIUSDT\" | \"DASHBNB\" | \"DASHBTC\" | \"DASHBUSD\" | \"DASHETH\" | \"DASHUSDT\" | \"DATABTC\" | \"DATABUSD\" | \"DATAETH\" | \"DATAUSDT\" | \"DCRBNB\" | \"DCRBTC\" | \"DCRBUSD\" | \"DCRUSDT\" | \"DEGOBTC\" | \"DEGOBUSD\" | \"DEGOUSDT\" | \"DENTBTC\" | \"DENTETH\" | \"DENTUSDT\" | \"DEXEBUSD\" | \"DEXEETH\" | \"DFBUSD\" | \"DFETH\" | \"DGBBNB\" | \"DGBBTC\" | \"DGBBUSD\" | \"DGBUSDT\" | \"DGDBTC\" | \"DGDETH\" | \"DIABNB\" | \"DIABTC\" | \"DIABUSD\" | \"DIAUSDT\" | \"DLTBNB\" | \"DLTBTC\" | \"DLTETH\" | \"DNTBTC\" | \"DNTBUSD\" | \"DNTETH\" | \"DNTUSDT\" | \"DOCKBTC\" | \"DOCKETH\" | \"DOCKUSDT\" | \"DODOBTC\" | \"DODOBUSD\" | \"DODOUSDT\" | \"DOGEAUD\" | \"DOGEBNB\" | \"DOGEBRL\" | \"DOGEBTC\" | \"DOGEBUSD\" | \"DOGEEUR\" | \"DOGEGBP\" | \"DOGEPAX\" | \"DOGERUB\" | \"DOGETRY\" | \"DOGEUSDC\" | \"DOGEUSDT\" | \"DOTBIDR\" | \"DOTBKRW\" | \"DOTBNB\" | \"DOTBRL\" | \"DOTBTC\" | \"DOTBUSD\" | \"DOTDOWNUSDT\" | \"DOTEUR\" | \"DOTGBP\" | \"DOTNGN\" | \"DOTTRY\" | \"DOTUPUSDT\" | \"DOTUSDT\" | \"DREPBNB\" | \"DREPBTC\" | \"DREPUSDT\" | \"DUSKBNB\" | \"DUSKBTC\" | \"DUSKPAX\" | \"DUSKUSDC\" | \"DUSKUSDT\" | \"EASYBTC\" | \"EASYETH\" | \"EDOBTC\" | \"EDOETH\" | \"EGLDBNB\" | \"EGLDBTC\" | \"EGLDBUSD\" | \"EGLDEUR\" | \"EGLDUSDT\" | \"ELFBTC\" | \"ELFETH\" | \"ENGBTC\" | \"ENGETH\" | \"ENJBNB\" | \"ENJBRL\" | \"ENJBTC\" | \"ENJBUSD\" | \"ENJETH\" | \"ENJEUR\" | \"ENJGBP\" | \"ENJUSDT\" | \"EOSBEARBUSD\" | \"EOSBEARUSDT\" | \"EOSBNB\" | \"EOSBTC\" | \"EOSBULLBUSD\" | \"EOSBULLUSDT\" | \"EOSBUSD\" | \"EOSDOWNUSDT\" | \"EOSETH\" | \"EOSEUR\" | \"EOSPAX\" | \"EOSTRY\" | \"EOSTUSD\" | \"EOSUPUSDT\" | \"EOSUSDC\" | \"EOSUSDT\" | \"EPSBTC\" | \"EPSBUSD\" | \"EPSUSDT\" | \"ERDBNB\" | \"ERDBTC\" | \"ERDBUSD\" | \"ERDPAX\" | \"ERDUSDC\" | \"ERDUSDT\" | \"ETCBNB\" | \"ETCBTC\" | \"ETCBUSD\" | \"ETCETH\" | \"ETCPAX\" | \"ETCTUSD\" | \"ETCUSDC\" | \"ETCUSDT\" | \"ETHAUD\" | \"ETHBEARBUSD\" | \"ETHBEARUSDT\" | \"ETHBIDR\" | \"ETHBKRW\" | \"ETHBRL\" | \"ETHBTC\" | \"ETHBULLBUSD\" | \"ETHBULLUSDT\" | \"ETHBUSD\" | \"ETHDAI\" | \"ETHDOWNUSDT\" | \"ETHEUR\" | \"ETHGBP\" | \"ETHNGN\" | \"ETHPAX\" | \"ETHRUB\" | \"ETHTRY\" | \"ETHTUSD\" | \"ETHUPUSDT\" | \"ETHUSDC\" | \"ETHUSDT\" | \"ETHZAR\" | \"EURBUSD\" | \"EURUSDT\" | \"EVXBTC\" | \"EVXETH\" | \"EZBTC\" | \"EZETH\" | \"FETBNB\" | \"FETBTC\" | \"FETUSDT\" | \"FILBNB\" | \"FILBTC\" | \"FILBUSD\" | \"FILDOWNUSDT\" | \"FILUPUSDT\" | \"FILUSDT\" | \"FIOBNB\" | \"FIOBTC\" | \"FIOBUSD\" | \"FIOUSDT\" | \"FIROBTC\" | \"FIROETH\" | \"FIROUSDT\" | \"FISBTC\" | \"FISBUSD\" | \"FISUSDT\" | \"FLMBNB\" | \"FLMBTC\" | \"FLMBUSD\" | \"FLMUSDT\" | \"FORBTC\" | \"FORBUSD\" | \"FORTHBTC\" | \"FORTHBUSD\" | \"FORTHUSDT\" | \"FRONTBTC\" | \"FRONTBUSD\" | \"FRONTETH\" | \"FTMBNB\" | \"FTMBTC\" | \"FTMPAX\" | \"FTMTUSD\" | \"FTMUSDC\" | \"FTMUSDT\" | \"FTTBNB\" | \"FTTBTC\" | \"FTTUSDT\" | \"FUELBTC\" | \"FUELETH\" | \"FUNBTC\" | \"FUNETH\" | \"FUNUSDT\" | \"FXSBTC\" | \"FXSBUSD\" | \"GASBTC\" | \"GBPBUSD\" | \"GBPUSDT\" | \"GHSTBUSD\" | \"GHSTETH\" | \"GLMBTC\" | \"GLMETH\" | \"GNTBNB\" | \"GNTBTC\" | \"GNTETH\" | \"GOBNB\" | \"GOBTC\" | \"GRSBTC\" | \"GRSETH\" | \"GRTBTC\" | \"GRTBUSD\" | \"GRTETH\" | \"GRTEUR\" | \"GRTUSDT\" | \"GTOBNB\" | \"GTOBTC\" | \"GTOETH\" | \"GTOPAX\" | \"GTOTUSD\" | \"GTOUSDC\" | \"GTOUSDT\" | \"GVTBTC\" | \"GVTETH\" | \"GXSBTC\" | \"GXSETH\" | \"GXSUSDT\" | \"HARDBNB\" | \"HARDBTC\" | \"HARDBUSD\" | \"HARDUSDT\" | \"HBARBNB\" | \"HBARBTC\" | \"HBARBUSD\" | \"HBARUSDT\" | \"HCBTC\" | \"HCETH\" | \"HCUSDT\" | \"HEGICBUSD\" | \"HEGICETH\" | \"HIVEBNB\" | \"HIVEBTC\" | \"HIVEUSDT\" | \"HNTBTC\" | \"HNTUSDT\" | \"HOTBNB\" | \"HOTBRL\" | \"HOTBTC\" | \"HOTBUSD\" | \"HOTETH\" | \"HOTEUR\" | \"HOTTRY\" | \"HOTUSDT\" | \"HSRBTC\" | \"HSRETH\" | \"ICNBTC\" | \"ICNETH\" | \"ICXBNB\" | \"ICXBTC\" | \"ICXBUSD\" | \"ICXETH\" | \"ICXUSDT\" | \"IDEXBTC\" | \"IDEXBUSD\" | \"INJBNB\" | \"INJBTC\" | \"INJBUSD\" | \"INJUSDT\" | \"INSBTC\" | \"INSETH\" | \"IOSTBNB\" | \"IOSTBTC\" | \"IOSTBUSD\" | \"IOSTETH\" | \"IOSTUSDT\" | \"IOTABNB\" | \"IOTABTC\" | \"IOTABUSD\" | \"IOTAETH\" | \"IOTAUSDT\" | \"IOTXBTC\" | \"IOTXETH\" | \"IOTXUSDT\" | \"IQBNB\" | \"IQBUSD\" | \"IRISBNB\" | \"IRISBTC\" | \"IRISBUSD\" | \"IRISUSDT\" | \"JSTBNB\" | \"JSTBTC\" | \"JSTBUSD\" | \"JSTUSDT\" | \"JUVBTC\" | \"JUVBUSD\" | \"JUVUSDT\" | \"KAVABNB\" | \"KAVABTC\" | \"KAVAUSDT\" | \"KEYBTC\" | \"KEYETH\" | \"KEYUSDT\" | \"KMDBTC\" | \"KMDBUSD\" | \"KMDETH\" | \"KMDUSDT\" | \"KNCBTC\" | \"KNCBUSD\" | \"KNCETH\" | \"KNCUSDT\" | \"KP3RBNB\" | \"KP3RBUSD\" | \"KSMBNB\" | \"KSMBTC\" | \"KSMBUSD\" | \"KSMUSDT\" | \"LENDBKRW\" | \"LENDBTC\" | \"LENDBUSD\" | \"LENDETH\" | \"LENDUSDT\" | \"LINABTC\" | \"LINABUSD\" | \"LINAUSDT\" | \"LINKAUD\" | \"LINKBKRW\" | \"LINKBRL\" | \"LINKBTC\" | \"LINKBUSD\" | \"LINKDOWNUSDT\" | \"LINKETH\" | \"LINKEUR\" | \"LINKGBP\" | \"LINKNGN\" | \"LINKPAX\" | \"LINKTRY\" | \"LINKTUSD\" | \"LINKUPUSDT\" | \"LINKUSDC\" | \"LINKUSDT\" | \"LITBTC\" | \"LITBUSD\" | \"LITUSDT\" | \"LOOMBNB\" | \"LOOMBTC\" | \"LOOMETH\" | \"LRCBTC\" | \"LRCBUSD\" | \"LRCETH\" | \"LRCUSDT\" | \"LSKBNB\" | \"LSKBTC\" | \"LSKETH\" | \"LSKUSDT\" | \"LTCBNB\" | \"LTCBRL\" | \"LTCBTC\" | \"LTCBUSD\" | \"LTCDOWNUSDT\" | \"LTCETH\" | \"LTCEUR\" | \"LTCGBP\" | \"LTCNGN\" | \"LTCPAX\" | \"LTCRUB\" | \"LTCTUSD\" | \"LTCUPUSDT\" | \"LTCUSDC\" | \"LTCUSDT\" | \"LTOBNB\" | \"LTOBTC\" | \"LTOUSDT\" | \"LUNABNB\" | \"LUNABTC\" | \"LUNABUSD\" | \"LUNAEUR\" | \"LUNAUSDT\" | \"LUNBTC\" | \"LUNETH\" | \"MANABTC\" | \"MANABUSD\" | \"MANAETH\" | \"MANAUSDT\" | \"MATICBNB\" | \"MATICBTC\" | \"MATICBUSD\" | \"MATICEUR\" | \"MATICUSDT\" | \"MBLBNB\" | \"MBLBTC\" | \"MBLUSDT\" | \"MCOBNB\" | \"MCOBTC\" | \"MCOETH\" | \"MCOUSDT\" | \"MDABTC\" | \"MDAETH\" | \"MDTBNB\" | \"MDTBTC\" | \"MDTUSDT\" | \"MFTBNB\" | \"MFTBTC\" | \"MFTETH\" | \"MFTUSDT\" | \"MIRBTC\" | \"MIRBUSD\" | \"MIRUSDT\" | \"MITHBNB\" | \"MITHBTC\" | \"MITHUSDT\" | \"MKRBNB\" | \"MKRBTC\" | \"MKRBUSD\" | \"MKRUSDT\" | \"MODBTC\" | \"MODETH\" | \"MTHBTC\" | \"MTHETH\" | \"MTLBTC\" | \"MTLETH\" | \"MTLUSDT\" | \"NANOBNB\" | \"NANOBTC\" | \"NANOBUSD\" | \"NANOETH\" | \"NANOUSDT\" | \"NASBNB\" | \"NASBTC\" | \"NASETH\" | \"NAVBNB\" | \"NAVBTC\" | \"NAVETH\" | \"NBSBTC\" | \"NBSUSDT\" | \"NCASHBNB\" | \"NCASHBTC\" | \"NCASHETH\" | \"NEARBNB\" | \"NEARBTC\" | \"NEARBUSD\" | \"NEARUSDT\" | \"NEBLBNB\" | \"NEBLBTC\" | \"NEBLETH\" | \"NEOBNB\" | \"NEOBTC\" | \"NEOBUSD\" | \"NEOETH\" | \"NEOPAX\" | \"NEOTRY\" | \"NEOTUSD\" | \"NEOUSDC\" | \"NEOUSDT\" | \"NKNBNB\" | \"NKNBTC\" | \"NKNUSDT\" | \"NMRBNB\" | \"NMRBTC\" | \"NMRBUSD\" | \"NMRUSDT\" | \"NPXSBTC\" | \"NPXSETH\" | \"NPXSUSDC\" | \"NPXSUSDT\" | \"NULSBNB\" | \"NULSBTC\" | \"NULSETH\" | \"NULSUSDT\" | \"NXSBNB\" | \"NXSBTC\" | \"NXSETH\" | \"OAXBTC\" | \"OAXETH\" | \"OCEANBNB\" | \"OCEANBTC\" | \"OCEANBUSD\" | \"OCEANUSDT\" | \"OGBTC\" | \"OGNBNB\" | \"OGNBTC\" | \"OGNUSDT\" | \"OGUSDT\" | \"OMBTC\" | \"OMBUSD\" | \"OMGBNB\" | \"OMGBTC\" | \"OMGBUSD\" | \"OMGETH\" | \"OMGUSDT\" | \"OMUSDT\" | \"ONEBIDR\" | \"ONEBNB\" | \"ONEBTC\" | \"ONEBUSD\" | \"ONEPAX\" | \"ONETUSD\" | \"ONEUSDC\" | \"ONEUSDT\" | \"ONGBNB\" | \"ONGBTC\" | \"ONGUSDT\" | \"ONTBNB\" | \"ONTBTC\" | \"ONTBUSD\" | \"ONTETH\" | \"ONTPAX\" | \"ONTTRY\" | \"ONTUSDC\" | \"ONTUSDT\" | \"ORNBTC\" | \"ORNUSDT\" | \"OSTBNB\" | \"OSTBTC\" | \"OSTETH\" | \"OXTBTC\" | \"OXTUSDT\" | \"PAXBNB\" | \"PAXBTC\" | \"PAXBUSD\" | \"PAXETH\" | \"PAXGBNB\" | \"PAXGBTC\" | \"PAXGBUSD\" | \"PAXGUSDT\" | \"PAXTUSD\" | \"PAXUSDT\" | \"PERLBNB\" | \"PERLBTC\" | \"PERLUSDC\" | \"PERLUSDT\" | \"PERPBTC\" | \"PERPBUSD\" | \"PERPUSDT\" | \"PHABTC\" | \"PHABUSD\" | \"PHBBNB\" | \"PHBBTC\" | \"PHBPAX\" | \"PHBTUSD\" | \"PHBUSDC\" | \"PHXBNB\" | \"PHXBTC\" | \"PHXETH\" | \"PIVXBNB\" | \"PIVXBTC\" | \"PIVXETH\" | \"PNTBTC\" | \"PNTUSDT\" | \"POABNB\" | \"POABTC\" | \"POAETH\" | \"POEBTC\" | \"POEETH\" | \"POLYBNB\" | \"POLYBTC\" | \"PONDBTC\" | \"PONDBUSD\" | \"PONDUSDT\" | \"POWRBNB\" | \"POWRBTC\" | \"POWRETH\" | \"PPTBTC\" | \"PPTETH\" | \"PROMBNB\" | \"PROMBUSD\" | \"PROSETH\" | \"PSGBTC\" | \"PSGBUSD\" | \"PSGUSDT\" | \"PUNDIXETH\" | \"PUNDIXUSDT\" | \"QKCBTC\" | \"QKCETH\" | \"QLCBNB\" | \"QLCBTC\" | \"QLCETH\" | \"QSPBNB\" | \"QSPBTC\" | \"QSPETH\" | \"QTUMBNB\" | \"QTUMBTC\" | \"QTUMBUSD\" | \"QTUMETH\" | \"QTUMUSDT\" | \"RAMPBTC\" | \"RAMPBUSD\" | \"RAMPUSDT\" | \"RCNBNB\" | \"RCNBTC\" | \"RCNETH\" | \"..\" | \"RDNBNB\" | \"RDNBTC\" | \"RDNETH\" | \"REEFBTC\" | \"REEFBUSD\" | \"REEFUSDT\" | \"RENBNB\" | \"RENBTC\" | \"RENBTCBTC\" | \"RENBTCETH\" | \"RENUSDT\" | \"REPBNB\" | \"REPBTC\" | \"REPBUSD\" | \"REPETH\" | \"REPUSDT\" | \"REQBTC\" | \"REQETH\" | \"RIFBTC\" | \"RIFUSDT\" | \"RLCBNB\" | \"RLCBTC\" | \"RLCETH\" | \"RLCUSDT\" | \"ROSEBTC\" | \"ROSEBUSD\" | \"ROSEUSDT\" | \"RPXBNB\" | \"RPXBTC\" | \"RPXETH\" | \"RSRBNB\" | \"RSRBTC\" | \"RSRBUSD\" | \"RSRUSDT\" | \"RUNEBNB\" | \"RUNEBTC\" | \"RUNEBUSD\" | \"RUNEUSDT\" | \"RVNBNB\" | \"RVNBTC\" | \"RVNBUSD\" | \"RVNTRY\" | \"RVNUSDT\" | \"SALTBTC\" | \"SALTETH\" | \"SANDBNB\" | \"SANDBTC\" | \"SANDBUSD\" | \"SANDUSDT\" | \"SCBNB\" | \"SCBTC\" | \"SCETH\" | \"SCRTBTC\" | \"SCRTETH\" | \"SCUSDT\" | \"SFPBTC\" | \"SFPBUSD\" | \"SFPUSDT\" | \"SKLBTC\" | \"SKLBUSD\" | \"SKLUSDT\" | \"SKYBNB\" | \"SKYBTC\" | \"SKYETH\" | \"SLPBUSD\" | \"SLPETH\" | \"SLPUSDT\" | \"SNGLSBTC\" | \"SNGLSETH\" | \"SNMBTC\" | \"SNMETH\" | \"SNTBTC\" | \"SNTETH\" | \"SNXBNB\" | \"SNXBTC\" | \"SNXBUSD\" | \"SNXUSDT\" | \"SOLBNB\" | \"SOLBTC\" | \"SOLBUSD\" | \"SOLUSDT\" | \"SPARTABNB\" | \"SRMBIDR\" | \"SRMBNB\" | \"SRMBTC\" | \"SRMBUSD\" | \"SRMUSDT\" | \"STEEMBNB\" | \"STEEMBTC\" | \"STEEMETH\" | \"STMXBNB\" | \"STMXBTC\" | \"STMXETH\" | \"STMXUSDT\" | \"STORJBTC\" | \"STORJBUSD\" | \"STORJETH\" | \"STORJUSDT\" | \"STORMBNB\" | \"STORMBTC\" | \"STORMETH\" | \"STORMUSDT\" | \"STPTBNB\" | \"STPTBTC\" | \"STPTUSDT\" | \"STRATBNB\" | \"STRATBTC\" | \"STRATBUSD\" | \"STRATETH\" | \"STRATUSDT\" | \"STRAXBTC\" | \"STRAXBUSD\" | \"STRAXETH\" | \"STRAXUSDT\" | \"STXBNB\" | \"STXBTC\" | \"STXUSDT\" | \"SUBBTC\" | \"SUBETH\" | \"SUNBTC\" | \"SUNUSDT\" | \"SUPERBTC\" | \"SUPERBUSD\" | \"SUPERUSDT\" | \"SUSDBTC\" | \"SUSDETH\" | \"SUSDUSDT\" | \"SUSHIBNB\" | \"SUSHIBTC\" | \"SUSHIBUSD\" | \"SUSHIDOWNUSDT\" | \"SUSHIUPUSDT\" | \"SUSHIUSDT\" | \"SWRVBNB\" | \"SWRVBUSD\" | \"SXPAUD\" | \"SXPBIDR\" | \"SXPBNB\" | \"SXPBTC\" | \"SXPBUSD\" | \"SXPDOWNUSDT\" | \"SXPEUR\" | \"SXPGBP\" | \"SXPTRY\" | \"SXPUPUSDT\" | \"SXPUSDT\" | \"SYSBNB\" | \"SYSBTC\" | \"SYSBUSD\" | \"SYSETH\" | \"TCTBNB\" | \"TCTBTC\" | \"TCTUSDT\" | \"TFUELBNB\" | \"TFUELBTC\" | \"TFUELPAX\" | \"TFUELTUSD\" | \"TFUELUSDC\" | \"TFUELUSDT\" | \"THETABNB\" | \"THETABTC\" | \"THETAETH\" | \"THETAEUR\" | \"THETAUSDT\" | \"TKOBIDR\" | \"TKOBTC\" | \"TKOBUSD\" | \"TKOUSDT\" | \"TLMBTC\" | \"TLMBUSD\" | \"TLMUSDT\" | \"TNBBTC\" | \"TNBETH\" | \"TNTBTC\" | \"TNTETH\" | \"TOMOBNB\" | \"TOMOBTC\" | \"TOMOBUSD\" | \"TOMOUSDC\" | \"TOMOUSDT\" | \"TRBBNB\" | \"TRBBTC\" | \"TRBBUSD\" | \"TRBUSDT\" | \"TRIGBNB\" | \"TRIGBTC\" | \"TRIGETH\" | \"TROYBNB\" | \"TROYBTC\" | \"TROYUSDT\" | \"TRUBTC\" | \"TRUBUSD\" | \"TRUUSDT\" | \"TRXAUD\" | \"TRXBNB\" | \"TRXBTC\" | \"TRXBUSD\" | \"TRXDOWNUSDT\" | \"TRXETH\" | \"TRXEUR\" | \"TRXNGN\" | \"TRXPAX\" | \"TRXTRY\" | \"TRXTUSD\" | \"TRXUPUSDT\" | \"TRXUSDC\" | \"TRXUSDT\" | \"TRXXRP\" | \"TUSDBNB\" | \"TUSDBTC\" | \"TUSDBTUSD\" | \"TUSDBUSD\" | \"TUSDETH\" | \"TUSDUSDT\" | \"TVKBTC\" | \"TVKBUSD\" | \"TWTBTC\" | \"TWTBUSD\" | \"TWTUSDT\" | \"UFTBUSD\" | \"UFTETH\" | \"UMABTC\" | \"UMAUSDT\" | \"UNFIBNB\" | \"UNFIBTC\" | \"UNFIBUSD\" | \"UNFIUSDT\" | \"UNIBNB\" | \"UNIBTC\" | \"UNIBUSD\" | \"UNIDOWNUSDT\" | \"UNIEUR\" | \"UNIUPUSDT\" | \"UNIUSDT\" | \"USDCBNB\" | \"USDCBUSD\" | \"USDCPAX\" | \"USDCTUSD\" | \"USDCUSDT\" | \"USDSBUSDS\" | \"USDSBUSDT\" | \"USDSPAX\" | \"USDSTUSD\" | \"USDSUSDC\" | \"USDSUSDT\" | \"USDTBIDR\" | \"USDTBKRW\" | \"USDTBRL\" | \"USDTBVND\" | \"USDTDAI\" | \"USDTIDRT\" | \"USDTNGN\" | \"USDTRUB\" | \"USDTTRY\" | \"USDTUAH\" | \"USDTZAR\" | \"UTKBTC\" | \"UTKUSDT\" | \"VENBNB\" | \"VENBTC\" | \"VENETH\" | \"VENUSDT\" | \"VETBNB\" | \"VETBTC\" | \"VETBUSD\" | \"VETETH\" | \"VETEUR\" | \"VETGBP\" | \"VETTRY\" | \"VETUSDT\" | \"VIABNB\" | \"VIABTC\" | \"VIAETH\" | \"VIBBTC\" | \"VIBEBTC\" | \"VIBEETH\" | \"VIBETH\" | \"VIDTBTC\" | \"VIDTBUSD\" | \"VITEBNB\" | \"VITEBTC\" | \"VITEUSDT\" | \"VTHOBNB\" | \"VTHOBUSD\" | \"VTHOUSDT\" | \"WABIBNB\" | \"WABIBTC\" | \"WABIETH\" | \"WANBNB\" | \"WANBTC\" | \"WANETH\" | \"WANUSDT\" | \"WAVESBNB\" | \"WAVESBTC\" | \"WAVESBUSD\" | \"WAVESETH\" | \"WAVESPAX\" | \"WAVESTUSD\" | \"WAVESUSDC\" | \"WAVESUSDT\" | \"WBTCBTC\" | \"WBTCETH\" | \"WINBNB\" | \"WINBRL\" | \"WINBTC\" | \"WINEUR\" | \"WINGBNB\" | \"WINGBTC\" | \"WINGBUSD\" | \"WINGSBTC\" | \"WINGSETH\" | \"WINGUSDT\" | \"WINTRX\" | \"WINUSDC\" | \"WINUSDT\" | \"WNXMBNB\" | \"WNXMBTC\" | \"WNXMBUSD\" | \"WNXMUSDT\" | \"WPRBTC\" | \"WPRETH\" | \"WRXBNB\" | \"WRXBTC\" | \"WRXBUSD\" | \"WRXEUR\" | \"WRXUSDT\" | \"WTCBNB\" | \"WTCBTC\" | \"WTCETH\" | \"WTCUSDT\" | \"XEMBNB\" | \"XEMBTC\" | \"XEMETH\" | \"XEMUSDT\" | \"XLMBNB\" | \"XLMBTC\" | \"XLMBUSD\" | \"XLMDOWNUSDT\" | \"XLMETH\" | \"XLMEUR\" | \"XLMPAX\" | \"XLMTRY\" | \"XLMTUSD\" | \"XLMUPUSDT\" | \"XLMUSDC\" | \"XLMUSDT\" | \"XMRBNB\" | \"XMRBTC\" | \"XMRBUSD\" | \"XMRETH\" | \"XMRUSDT\" | \"XRPAUD\" | \"XRPBEARBUSD\" | \"XRPBEARUSDT\" | \"XRPBKRW\" | \"XRPBNB\" | \"XRPBRL\" | \"XRPBTC\" | \"XRPBULLBUSD\" | \"XRPBULLUSDT\" | \"XRPBUSD\" | \"XRPDOWNUSDT\" | \"XRPETH\" | \"XRPEUR\" | \"XRPGBP\" | \"XRPNGN\" | \"XRPPAX\" | \"XRPRUB\" | \"XRPTRY\" | \"XRPTUSD\" | \"XRPUPUSDT\" | \"XRPUSDC\" | \"XRPUSDT\" | \"XTZBNB\" | \"XTZBTC\" | \"XTZBUSD\" | \"XTZDOWNUSDT\" | \"XTZUPUSDT\" | \"XTZUSDT\" | \"XVGBTC\" | \"XVGBUSD\" | \"XVGETH\" | \"XVSBNB\" | \"XVSBTC\" | \"XVSBUSD\" | \"XVSUSDT\" | \"XZCBNB\" | \"XZCBTC\" | \"XZCETH\" | \"XZCUSDT\" | \"XZCXRP\" | \"YFIBNB\" | \"YFIBTC\" | \"YFIBUSD\" | \"YFIDOWNUSDT\" | \"YFIEUR\" | \"YFIIBNB\" | \"YFIIBTC\" | \"YFIIBUSD\" | \"YFIIUSDT\" | \"YFIUPUSDT\" | \"YFIUSDT\" | \"YOYOBNB\" | \"YOYOBTC\" | \"YOYOETH\" | \"ZECBNB\" | \"ZECBTC\" | \"ZECBUSD\" | \"ZECETH\" | \"ZECPAX\" | \"ZECTUSD\" | \"ZECUSDC\" | \"ZECUSDT\" | \"ZENBNB\" | \"ZENBTC\" | \"ZENETH\" | \"ZENUSDT\" | \"ZILBIDR\" | \"ZILBNB\" | \"ZILBTC\" | \"ZILBUSD\" | \"ZILETH\" | \"ZILUSDT\" | \"ZRXBNB\" | \"ZRXBTC\" | \"ZRXBUSD\" | \"ZRXETH\" | \"ZRXUSDT\";\r\nexport declare type ExchangeName = \"Binance\";\r\nexport interface BinanceCredentials {\r\n    API_KEY: string;\r\n    USER_ID: string;\r\n}\r\nexport declare type ExchangeCredentials = BinanceCredentials;\r\nexport interface ExchangeRepository {\r\n    getCandles(sDate: Date, eDate: Date, pair: ExchangePair, interval: ExchangeInterval): Promise<Candle[]>;\r\n    auth(credentials: ExchangeCredentials): Promise<void>;\r\n}\r\n",
+    "filename": "file:///node_modules/yieldfinity/domain/port/repositories/exchange.port.d.ts",
+    "language": "typescript"
+  },
+  {
+    "value": "export * from './exchange.port';\r\n",
+    "filename": "file:///node_modules/yieldfinity/domain/port/repositories/index.d.ts",
+    "language": "typescript"
+  },
+  {
+    "value": "import { CsvParserOptions } from \"../../../adapters/services/csv.service\";\r\nexport interface CsvService {\r\n    parse(filePath: string, options?: CsvParserOptions): any;\r\n}\r\n",
+    "filename": "file:///node_modules/yieldfinity/domain/port/services/csv.port.d.ts",
+    "language": "typescript"
+  },
+  {
+    "value": "export interface FileService {\r\n    download(path: string, filename: string, destination: string): Promise<void>;\r\n    delete(filePath: string): Promise<void>;\r\n    read(filePath: string): Promise<string>;\r\n}\r\n",
+    "filename": "file:///node_modules/yieldfinity/domain/port/services/file.port.d.ts",
+    "language": "typescript"
+  },
+  {
+    "value": "export * from './csv.port';\r\nexport * from './file.port';\r\nexport * from './zip.port';\r\n",
+    "filename": "file:///node_modules/yieldfinity/domain/port/services/index.d.ts",
+    "language": "typescript"
+  },
+  {
+    "value": "export interface ZipService {\r\n    unzip(path: string, filename: string, destination: string): Promise<void>;\r\n}\r\n",
+    "filename": "file:///node_modules/yieldfinity/domain/port/services/zip.port.d.ts",
+    "language": "typescript"
+  },
+  {
+    "value": "export { Binance } from \"./adapters\";\r\n",
+    "filename": "file:///node_modules/yieldfinity/exchanges.d.ts",
+    "language": "typescript"
+  },
+  {
+    "value": "export { CustomTriggerFlow, TriggerFlow } from \"./domain\";\r\n",
+    "filename": "file:///node_modules/yieldfinity/flows.d.ts",
+    "language": "typescript"
+  },
+  {
+    "value": "export * from './adapters';\r\nexport * from './domain';\r\n",
+    "filename": "file:///node_modules/yieldfinity/index.d.ts",
+    "language": "typescript"
+  },
+  {
+    "value": "export { Indicators } from \"./adapters\";\r\n",
+    "filename": "file:///node_modules/yieldfinity/indicators.d.ts",
+    "language": "typescript"
+  },
+  {
+    "value": "export { Order, StopLoss, TakeProfit, FutureOrder, Position } from \"./domain\";\r\n",
+    "filename": "file:///node_modules/yieldfinity/orders.d.ts",
+    "language": "typescript"
+  },
+  {
+    "value": "export { PriceTrigger, SMATrigger, RSITrigger, MACDTrigger, ATRTrigger, EMATrigger, CustomTrigger } from \"./domain\";\r\n",
+    "filename": "file:///node_modules/yieldfinity/triggers.d.ts",
+    "language": "typescript"
+  }
+]

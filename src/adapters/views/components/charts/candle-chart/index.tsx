@@ -36,9 +36,7 @@ export const CandleChart = ({ candles, positions, indicators}: CandleChartProps)
     if (!chartRef.current) return;
     if (!chart) setChart(createChart(chartRef.current, buildChartOptions(chartRef.current.clientWidth, chartRef.current.clientHeight)));
     else {
-      if (series) {
-        chart.removeSeries(series);
-      }
+      if (series) chart.removeSeries(series);
       const currentSeries = chart.addCandlestickSeries(candleStickOptions);
       currentSeries.setData(CandleStickMapper.toChart(intervalCandles));
       setSeries(currentSeries);

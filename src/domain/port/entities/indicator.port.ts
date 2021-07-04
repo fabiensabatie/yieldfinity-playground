@@ -12,8 +12,7 @@ import { SMAIndicator, SMAIndicatorOutput, SMAIndicatorParameters } from "./indi
 
 export const IndicatorNames = ["sma", "ema", "rsi", "macd", "bearish", "bullish", "atr"] as const;
 export type Indicators = typeof IndicatorNames[number];
-export type IndicatorPropsWithoutTriggers = SMAIndicator | EMAIndicator | RSIIndicator | MACDIndicator | BearishIndicator | BullishIndicator | ATRIndicator;
-export type IndicatorProps = IndicatorPropsWithoutTriggers & { triggers ?: StrategyIndicatorTrigger[] }
+export type IndicatorProps = SMAIndicator | EMAIndicator | RSIIndicator | MACDIndicator | BearishIndicator | BullishIndicator | ATRIndicator;
 export type IndicatorParameters = SMAIndicatorParameters | EMAIndicatorParameters | RSIIndicatorParameters | MACDIndicatorParameters | BearishIndicatorParameters | BullishIndicatorParameters | ATRIndicatorParameters;
 export type IndicatorOutputs = SMAIndicatorOutput | EMAIndicatorOutput | RSIIndicatorOutput | MACDIndicatorOutput | BearishIndicatorOutput | BullishIndicatorOutput | ATRIndicatorOutput;
 export interface Values { values: number[]; }

@@ -7,6 +7,7 @@ export interface OrderState {
   closeAt: Date;
   fee: number;
   profit: number;
+  pnl: number;
 }
 
 export interface OrderProps {

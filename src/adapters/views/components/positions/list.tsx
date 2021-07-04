@@ -32,8 +32,8 @@ export const PositionList = ({ positions }: Props) => {
             <span className={"w-full font-bold text-sm"}>{position.state.fee}</span>
             <span className={"w-full font-bold text-sm"}>{position.price}</span>
             <span className={"w-full font-bold text-sm"}>{position.quantity}</span>
-            <span className={"w-full font-bold text-sm " + (position.state.profit > 0 ? "text-green" : "text-red")}>{position.state.profit}</span>
-            <span className={"w-full font-bold text-sm " + (position.state.profit > 0 ? "text-green" : "text-red")}>{parseFloat(`${100 - (position.price - position.state.profit) / position.price * 100}`).toFixed(2) }%</span>
+            <span className={"w-full font-bold text-sm " + (position.state.profit > 0 ? "text-green" : "text-red")}>{position.state.profit.toFixed(2)}</span>
+            <span className={"w-full font-bold text-sm " + (position.state.pnl > 0 ? "text-green" : "text-red")}>{position.state.pnl.toFixed(2) }%</span>
           </div>
         ))}
         </div> : <div className="w-full m-4">Import your backtesting positions to see your results</div>

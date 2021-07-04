@@ -9,7 +9,7 @@ export const PositionResults = ({ positions }: Props) => {
 
   const profit = positions.reduce((sum, order) =>  sum + order.state.profit, 0);
   const fee = positions.reduce((sum, order) =>  sum + order.state.fee, 0);
-  const pnl = positions.reduce((sum, order) => (100 - (order.price - order.state.profit) / order.price * 100) + sum, 0) / positions.length;
+  const pnl = positions.reduce((sum, order) =>  sum + order.state.pnl, 0) / positions.length;
 
   return (<div  className="w-full h-full">
     <div className="w-full p-3 bg-black-primary text-white text-sm uppercase">Backtest results</div>
