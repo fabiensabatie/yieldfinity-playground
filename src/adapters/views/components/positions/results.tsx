@@ -1,5 +1,5 @@
-import { Position } from "../../../../domain/port/entities/position.port";
 import Countup from "react-countup";
+import { Position } from "yieldfinity";
 
 interface Props {
   positions: Position[]

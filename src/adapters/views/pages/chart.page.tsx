@@ -2,7 +2,7 @@ import { TextField } from "@material-ui/core";
 import RefreshIcon from '@material-ui/icons/Refresh';
 import { Autocomplete } from "@material-ui/lab";
 import React, { useEffect, useState } from "react";
-import { ExchangePair, ExchangePairList } from "../../../domain/port/entities/exchange.port";
+import { ExchangePair } from "yieldfinity";
 import { Store } from "../../store";
 import { CandleChart } from "../components/charts/candle-chart";
 import ResponsiveDateRangePicker from "../components/commons/date-picker.component";
@@ -10,12 +10,12 @@ import { PositionList } from "../components/positions/list";
 import { PositionResults } from "../components/positions/results";
 import Editor from "../components/code-editor/editor/Editor";
 import { Upload } from "../components/commons/json-reader.component";
-import Models from "../../repositories/mock-data/yieldfinity.json";
-
-import * as YieldFinity from "yieldfinity";
-import { modelsInfoType } from "../components/code-editor/editor/editorContext";
+import backtest from "../../../domain/example";
+import { ExchangePairList } from "../../../domain/port/entities/exchange.port";
+backtest();
 
 export const ChartPage: React.FunctionComponent = () => {
+
   const [startDate, setStartDate] = useState<Date>(new Date('2021-01-07'));
   const [endDate, setEndDate] = useState<Date>(new Date('2021-01-28'));
   const [pair, setPair] = useState<ExchangePair>("BTCUSDT");
@@ -23,7 +23,7 @@ export const ChartPage: React.FunctionComponent = () => {
   const setCandles = Store.candles(state => state.set);
   const candles = Store.candles(state => state.candles);
   const orders = Store.positions(state => state.positions);
-const loading = Store.candles(state => state.loading);
+  const loading = Store.candles(state => state.loading);
   
   const getCandles:Function = () => setCandles(startDate, endDate, pair);
 

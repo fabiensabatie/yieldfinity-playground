@@ -1,10 +1,8 @@
 import { createChart } from "lightweight-charts";
 import React, { useEffect, useRef, useState } from "react";
 import ResizeSensor from "resize-sensor";
-import { Candle } from "../../../../../domain/entities/candle";
-import { Indicator } from "../../../../../domain/entities/indicator";
-import { ExchangeInterval } from "../../../../../domain/port/entities/exchange.port";
-import { Position } from "../../../../../domain/port/entities/position.port";
+import { Candle, ExchangeInterval, Indicator, Position } from "yieldfinity";
+import { PlaygroundCandle } from "../../../../../domain/entities/candle";
 import { buildChartOptions, CandleStickMapper, candleStickOptions } from "./utils";
 
 interface CandleChartProps {
@@ -17,12 +15,12 @@ interface CandleChartProps {
 export const CandleChart = ({ candles, positions, indicators}: CandleChartProps) => {
   const chartRef = useRef<any>();
   const [currentInterval, setInt] = useState("1m");
-  const [intervalCandles, setIntervalCandles] = useState(Candle.withInterval(candles, currentInterval as ExchangeInterval))
+  const [intervalCandles, setIntervalCandles] = useState(PlaygroundCandle.withInterval(candles, currentInterval as ExchangeInterval))
   const [chart, setChart] = useState<any>(null);
   const [series, setSeries] = useState<any>(null);
 
   useEffect(() => {
-    setIntervalCandles(Candle.withInterval(candles, currentInterval as ExchangeInterval))
+    setIntervalCandles(PlaygroundCandle.withInterval(candles, currentInterval as ExchangeInterval))
   }, [candles, currentInterval])
 
   useEffect(() => {
@@ -41,6 +39,7 @@ export const CandleChart = ({ candles, positions, indicators}: CandleChartProps)
       currentSeries.setData(CandleStickMapper.toChart(intervalCandles));
       setSeries(currentSeries);
       const currentMakers = positions.reduce((positions:any, position) => {
+        if (!position.state.openAt || !position.state.closeAt) return positions;
         positions.push({
           time: position.state.openAt.getTime() / 1000,
           position: position.side === "ask" ? "belowBar" : "aboveBar",
@@ -60,6 +59,7 @@ export const CandleChart = ({ candles, positions, indicators}: CandleChartProps)
       currentSeries.setMarkers(currentMakers);
     }
     
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [candles, chart, intervalCandles]);
   
   return (

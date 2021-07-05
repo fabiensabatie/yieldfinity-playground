@@ -2,7 +2,6 @@ import React, { useRef, useState } from "react";
 import HelpOutlineIcon from '@material-ui/icons/HelpOutline';
 import { useEffect } from "react";
 import { Store } from "../../../store";
-import PositionMapper from "../../../mappers/position.mapper";
 
 export function Upload() {
   const fileInput = useRef<any>()
@@ -12,7 +11,7 @@ export function Upload() {
     fileReader.readAsText(e.target.files[0], "UTF-8");
     fileReader.onload = (e: any) => {
       const rawPositions = JSON.parse(e.target.result);
-      setPositions(rawPositions.map(PositionMapper.toDomain));
+      // setPositions(rawPositions.map(PositionMapper.toDomain));
     };
   };
 

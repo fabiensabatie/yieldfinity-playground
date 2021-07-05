@@ -1,6 +1,5 @@
-import { CandleProps } from "../port/entities/candle.port";
-import { ExchangeInterval } from "../port/entities/exchange.port";
 import moment, {Moment} from "moment";
+import { Candle, CandleProps, ExchangeInterval } from "yieldfinity";
 
 function nearestFutureMinutes(interval: number, moment: Moment){
   const roundedMinutes = Math.ceil(moment.minute() / interval) * interval;
@@ -75,20 +74,7 @@ const DeltaMap:any = {
 }
 
 
-export class Candle {
-
-  constructor(private props: CandleProps) {}
-
-  get openAt() : Date { return this.props.openAt };
-  get closeAt() : Date { return this.props.closeAt };
-  get open() : number { return this.props.open };
-  get close() : number { return this.props.close };
-  get high() : number { return this.props.high };
-  get low() : number { return this.props.low };
-  get volume() : number { return this.props.volume };
-  get exchange() : string { return this.props.exchange };
-  get interval() : ExchangeInterval { return this.props.interval };
-  get fields() : CandleProps { return this.props };
+export class PlaygroundCandle extends Candle {
 
   public static withInterval(candles: Candle[], interval: ExchangeInterval){
     if (interval === "1m" || !candles.length) return candles;
@@ -108,7 +94,7 @@ export class Candle {
           low : candle.low < props.low ? candle.low : props.low,
         };
         return (i !== chunkedCandles.length -1) ? sum : { ...sum, volume : sum.volume / chunkedCandles.length }
-      }, chunkedCandles[0].fields))
+      }, chunkedCandles[0].data))
       return candle;
     })
   }

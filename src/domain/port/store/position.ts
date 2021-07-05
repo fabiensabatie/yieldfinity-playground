@@ -1,4 +1,4 @@
-import { Position } from "../../port/entities/position.port";
+import { Position } from "yieldfinity";
 
 export interface PositionStoreInterface {
   positions: Position[];

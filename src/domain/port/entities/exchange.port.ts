@@ -1,4 +1,4 @@
-import { Candle } from "../../entities/candle";
+import { Candle } from "yieldfinity";
 
 export interface ExchangeProps {
   name: ExchangeName;

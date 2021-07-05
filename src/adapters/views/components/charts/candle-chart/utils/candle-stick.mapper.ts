@@ -1,5 +1,5 @@
 import { UTCTimestamp } from "lightweight-charts";
-import { Candle } from "../../../../../../domain/entities/candle";
+import { Candle } from "yieldfinity";
 import { CandleStick } from "../entities/candlestick";
 
 export const CandleStickMapper = Object.freeze({
