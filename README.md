@@ -1,6 +1,6 @@
 # Yieldfinity playground
 
-A playground for the [yieldfinity](https://www.npmjs.com/package/yieldfinity) module. Code and visualize your strategies directly in your web browser.
+A playground for the [yieldfinity](https://www.npmjs.com/package/yieldfinity) module. Code and visualize your strategies directly in your web browser. ⚠ Still under active development
 
 ### Getting started
 
