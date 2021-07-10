@@ -10,16 +10,18 @@ export default function getModelsInOrder(
   //Parse import statements to perform DFS starting at selected model
   const graph = allModels.map(model => {
     let importRegex = /(from|import)\s+["']([^"']*)["']/gm;
-    let importIndices = (model.getValue().match(importRegex) ?? []) //Get import strings
-      .map(s => s.match(/["']([^"']*)["']/)![1]) //find name
-      .map(s =>
-        allModels.findIndex(
-          findImportModel =>
-            s === findImportModel.uri.path.substring(1).replace(/\.[^.]*$/, '') //compare formatted import to formatted filename
-        )
+    let importStrings = (model.getValue().match(importRegex) ?? []) //Get import strings
+    console.log(importStrings)
+    let importName = importStrings.map(s => s.match(/["']([^"']*)["']/)![1]) //find name
+    let importModels = importName.map(s =>
+      allModels.findIndex(
+        findImportModel => {
+          return s.includes(findImportModel.uri.path.substring(1).replace(/\.[^.]*$/, ''))
+        }
       )
-      .filter(index => index !== -1);
-    return importIndices;
+    )
+    return importModels
+    .filter(index => index !== -1);
   });
 
   const currentIndex = allModels.findIndex(

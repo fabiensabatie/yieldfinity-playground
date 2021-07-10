@@ -6,6 +6,7 @@ import React, {
   SetStateAction,
 } from 'react';
 import Editor, { monaco } from '@monaco-editor/react';
+import { Store } from "../../../../store";
 import { editor } from 'monaco-editor';
 import {
   useEditor,
@@ -48,6 +49,9 @@ function App({
   const [models, setModels] = useModels();
   const [ctxEditor, setCtxEditor] = useEditor();
   const [consoleMessages, setConsoleMessages] = useConsoleMessages();
+
+  const setConsoleCode = Store.strategies(state => state.setConsole);
+
   const editorCallbackRef = useCallback((ref: editor.IStandaloneCodeEditor) => {
     setCtxEditor(ref);
   }, []);
@@ -93,7 +97,8 @@ function App({
   //Gets triggered on ctrl+enter, hack to avoid getting trapped in closures.
   useEffect(() => {
     if (ctrlCounter > 0) {
-      runFile(id, monacoInstance, models, selectedIdx, setConsoleMessages);
+      runFile(id, monacoInstance, models, selectedIdx, setConsoleMessages)
+      .then(code => {setConsoleCode(code ||"")})
     }
   }, [ctrlCounter]);
 

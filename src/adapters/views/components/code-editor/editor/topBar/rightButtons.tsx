@@ -12,6 +12,7 @@ import RestoreIcon from '@material-ui/icons/Restore';
 import CodeIcon from '@material-ui/icons/Code';
 import { useConsoleMessages } from '../editorContext';
 import { setModelsFromInfo } from '../mountFunctions';
+import { Store } from "../../../../../store";
 
 type PlayButtonType = { editorId: string; modelsInfo: modelsInfoType };
 export default function PlayButton({ editorId, modelsInfo }: PlayButtonType) {
@@ -20,6 +21,7 @@ export default function PlayButton({ editorId, modelsInfo }: PlayButtonType) {
   const monacoInstance = useMonaco()[0];
   const ctxEditor = useEditor()[0];
   const [models, setModels] = useModels();
+  const setConsoleCode = Store.strategies(state => state.setConsole);
 
   return (
     <div style={{ display: 'flex', marginLeft: 'auto', marginRight: '3px' }}>
@@ -48,14 +50,15 @@ export default function PlayButton({ editorId, modelsInfo }: PlayButtonType) {
         style={{ color: '#09ad11', marginRight: '4px' }}
       />
       <PlayArrowIcon
-        onClick={() => {
-          runFile(
+        onClick={async () => {
+          const code = await runFile(
             editorId,
             monacoInstance,
             models,
             selectedIdx,
             setConsoleMessages
           );
+          setConsoleCode(code || "")
         }}
         style={{ color: '#09ad11' }}
       />

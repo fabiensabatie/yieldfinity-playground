@@ -1,6 +1,9 @@
 import { modelsType } from '../editorContext';
 import monacoForType, { editor } from 'monaco-editor';
 import getModelsInOrder from './getModelsInOrder';
+import { TSCompileService } from '../../../../../services/ts-compile.service';
+import appendPackageImports from './appendPackageImports';
+import { Store } from '../../../../../store';
 
 function getErrors(
   monacoInstance: typeof monacoForType,
@@ -36,16 +39,16 @@ export default async function runFile(
   models: modelsType | undefined,
   selectedIdx: number | undefined,
   setConsoleMessages: Function
-) {
+): Promise<string | undefined> {
   setConsoleMessages([]);
   if (monacoInstance && models && selectedIdx !== undefined) {
     //runnerModel should (!) exist
     const runnerModel = monacoInstance.editor
       .getModels()
-      .find(model => model.uri.toString() === 'file:///0.ts')!;
-
+      .find(model => model.uri.toString() === 'file:///startegy.ts')!;
     const ranModels = getModelsInOrder(models[selectedIdx], monacoInstance); //dfs on imports
     ranModels.map(model => model.uri.path);
+
     //If type errors log and don't run files.
     const errors = getErrors(monacoInstance, ranModels);
     errors.map(error => console.error(error, editorId));
@@ -63,47 +66,20 @@ export default async function runFile(
               .replace(/export\s+{[^}]*}/g,'')
           ) //text array for each model
           .reduce((prevLines, line) => prevLines + line) + '\r\nexport {}'; //Prevents duplicate identifiers by making module;
-      //Set runner model value as concatted text
-      runnerModel.setValue(lines);
+    //Set runner model value as concatted text
 
-      const tsClient = await monacoInstance.languages.typescript
-        .getTypeScriptWorker()
-        .then(worker => worker(runnerModel.uri));
-      const emittedJS = (
-        await tsClient.getEmitOutput(runnerModel.uri.toString())
-      ).outputFiles[0].text.replace(/export {};\r\n/, '');
+    // runnerModel.setValue(lines);
+    // const tsClient = await monacoInstance.languages.typescript
+    //   .getTypeScriptWorker()
+    //   .then(worker => worker(runnerModel.uri));
+    // const emittedJS = (
+    //   await tsClient.getEmitOutput(runnerModel.uri.toString())
+    // ).outputFiles[0].text.replace(/export {};\r\n/, '');
+    
+      const importLines = appendPackageImports(monacoInstance, lines).join('\n')
 
-      let consoleOverride = `let console = (function (oldCons) {
-        return {
-          ...oldCons,
-          log: function (...args) {
-            oldCons.log.apply("lol")
-            args.push("${editorId}");
-            oldCons.log.apply(oldCons, args);
-          },
-          warn: function (...args) {
-            args.push("${editorId}");
-            oldCons.warn.apply(oldCons, args);
-          },
-          error: function (...args) {
-            args.push("${editorId}");
-            oldCons.error.apply(oldCons, args);
-          },
-        };
-      })(window.console);`;
-      try {
-        Function(consoleOverride + emittedJS)();
-      } catch (e) {
-        //This is to format runtime errors
-        if (e.stack) {
-          let message: string = e.stack;
-          const index = message.indexOf('\n');
-          message = message.substring(0, index);
-          console.error(message, editorId);
-        } else {
-          console.error(e, editorId);
-        }
-      }
+      const compiled =  TSCompileService(importLines + lines).replaceAll('"use strict";', "");
+      return compiled + "\nexports.endpoint = async (request, response) => { response.write(JSON.stringify(await backtest())); response.end(); } "
     }
   }
 }

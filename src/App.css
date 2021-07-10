@@ -47,8 +47,20 @@ body {
   font-family: "Quicksand";
   width: 100%;
   height: 100%;
+  overflow-x: hidden;
 }
 
 div {
   box-sizing: border-box;
+}
+
+iframe {
+  width: 100%;
+  overflow-y: scroll  !important;
+  -ms-overflow-style: none;  /* IE and Edge */
+  scrollbar-width: none;  /* Firefox */
+}
+
+iframe::-webkit-scrollbar {
+  display: none;
 }

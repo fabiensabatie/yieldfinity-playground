@@ -20,6 +20,15 @@ const BasicStrategy = ({
 
 const backtest = async () => {
   try {
+    console.log("#####################################");
+    console.log("#####################################");
+    console.log("#####################################");
+    console.log("########### Yieldifinity ############");
+    console.log("#####################################");
+    console.log("Initializing yieldfinity");
+    console.log("Initializing strategy");
+
+
     const pair: ExchangePair = "BTCUSDT";
     const sDate = new Date("2021-01-07");
     const eDate = new Date("2021-03-28");
@@ -40,18 +49,18 @@ const backtest = async () => {
 
     
 
-    // // Building the stategy & backtest
-    const strategy = new Strategy({ indicators: [price, sma], triggerFlow: customTriggerFlow, exchanges: [binance] });
+    // // Building the stategy & backtestnew Strategy({ indicators: [p
+    const strategy = new Strategy({indicators: [price, sma], triggerFlow: customTriggerFlow, exchanges: [binance] });
   
     strategy.run(candles);
     const profit = strategy.profit;
     const pnl = strategy.pnl;
     const profitablePositions = Math.ceil(strategy.profitablePositions.length / strategy.positions.length * 100);
     console.log(`Strategy made a profit of ${profit} (${pnl}%) : ${profitablePositions}% of positions were profitable`);
+    return strategy.closedPositions;
   }
   catch (err) {
     console.log(err)
   }
 }
 
-export default backtest

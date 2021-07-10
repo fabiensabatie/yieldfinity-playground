@@ -78,6 +78,10 @@ module.exports = {
     },
     zIndex: {
       9999: 9999,
+      1: 1,
+      2: 2,
+      3: 3,
+      4: 4,
     },
   },
   variants: {
