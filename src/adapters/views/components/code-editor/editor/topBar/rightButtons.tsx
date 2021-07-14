@@ -1,18 +1,10 @@
+import PlayArrowIcon from '@material-ui/icons/PlayArrow';
 import React from 'react';
+import { Store } from "../../../../../store";
 import {
-  useMonaco,
-  useEditor,
-  useModels,
-  useModelIndex,
-  modelsInfoType,
+  modelsInfoType, useConsoleMessages, useEditor, useModelIndex, useModels, useMonaco
 } from '../editorContext';
 import runFile from '../utils/runFile';
-import PlayArrowIcon from '@material-ui/icons/PlayArrow';
-import RestoreIcon from '@material-ui/icons/Restore';
-import CodeIcon from '@material-ui/icons/Code';
-import { useConsoleMessages } from '../editorContext';
-import { setModelsFromInfo } from '../mountFunctions';
-import { Store } from "../../../../../store";
 
 type PlayButtonType = { editorId: string; modelsInfo: modelsInfoType };
 export default function PlayButton({ editorId, modelsInfo }: PlayButtonType) {
@@ -22,33 +14,10 @@ export default function PlayButton({ editorId, modelsInfo }: PlayButtonType) {
   const ctxEditor = useEditor()[0];
   const [models, setModels] = useModels();
   const setConsoleCode = Store.strategies(state => state.setConsole);
+  const setPositions = Store.positions(state => state.set);
 
   return (
     <div style={{ display: 'flex', marginLeft: 'auto', marginRight: '3px' }}>
-      <CodeIcon
-        onClick={() => {
-          const newModelInfo = models?.map(mappedModel => {
-            const { model, ...theModelInfo } = mappedModel;
-            theModelInfo.value = model.getValue();
-            return theModelInfo;
-          });
-          navigator.clipboard.writeText(JSON.stringify(newModelInfo));
-        }}
-        style={{ color: '#09ad11', marginRight: '4px' }}
-      />
-      <RestoreIcon
-        onClick={() =>
-          setModelsFromInfo(
-            modelsInfo,
-            monacoInstance!,
-            ctxEditor!,
-            setModels,
-            setSelectedIdx,
-            true
-          )
-        }
-        style={{ color: '#09ad11', marginRight: '4px' }}
-      />
       <PlayArrowIcon
         onClick={async () => {
           const code = await runFile(
@@ -58,7 +27,7 @@ export default function PlayButton({ editorId, modelsInfo }: PlayButtonType) {
             selectedIdx,
             setConsoleMessages
           );
-          setConsoleCode(code || "")
+          setConsoleCode(code || "", setPositions)
         }}
         style={{ color: '#09ad11' }}
       />

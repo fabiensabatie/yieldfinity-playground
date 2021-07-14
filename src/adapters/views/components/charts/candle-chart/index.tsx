@@ -42,17 +42,17 @@ export const CandleChart = ({ candles, positions, indicators}: CandleChartProps)
         if (!position.state.openAt || !position.state.closeAt) return positions;
         positions.push({
           time: position.state.openAt.getTime() / 1000,
-          position: position.side === "ask" ? "belowBar" : "aboveBar",
-          color:  position.side === "ask" ? "#46e60b" : "black",
-          shape: position.side === "ask" ? "arrowUp" : "arrowDown",
-          text: position.side === "ask" ? "Buy" : "Sell",
+          position: position.side === "long" ? "belowBar" : "aboveBar",
+          color:  position.side === "long" ? "#46e60b" : "black",
+          shape: position.side === "long" ? "arrowUp" : "arrowDown",
+          text: position.side === "long" ? "Buy" : "Sell",
         })
         positions.push({
           time: position.state.closeAt.getTime() / 1000,
-          position: position.side === "bid" ? "belowBar" : "aboveBar",
-          color: position.side === "bid" ? "#46e60b" : "black",
-          shape: position.side === "bid" ? "arrowUp" : "arrowDown",
-          text: position.side === "bid" ? "Buy" : "Sell",
+          position: position.side === "short" ? "belowBar" : "aboveBar",
+          color: position.side === "short" ? "#46e60b" : "black",
+          shape: position.side === "short" ? "arrowUp" : "arrowDown",
+          text: position.side === "short" ? "Buy" : "Sell",
         })
         return positions;
       }, [])

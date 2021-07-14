@@ -7,11 +7,11 @@ import { Store } from "../../store";
 import { CandleChart } from "../components/charts/candle-chart";
 import ResponsiveDateRangePicker from "../components/commons/date-picker.component";
 import { PositionList } from "../components/positions/list";
-import { PositionResults } from "../components/positions/results";
+import { StrategyResults } from "../components/positions/results";
 import Editor from "../components/code-editor/editor/Editor";
 import { Upload } from "../components/commons/json-reader.component";
 import { ExchangePairList } from "../../../domain/port/entities/exchange.port";
-import Loader from "react-loader-spinner";
+import { codeContent } from "./example";
 const Embed = require('react-runkit')
 
 
@@ -30,7 +30,6 @@ export const ChartPage: React.FunctionComponent = () => {
   const consoleLoading = Store.strategies(state => state.loading);
 
   const getCandles:Function = () => setCandles(startDate, endDate, pair);
-  console.log(consoleLoading, "consoleLoading")
   useEffect(() =>  getCandles(), [])
 
   return (
@@ -43,15 +42,17 @@ export const ChartPage: React.FunctionComponent = () => {
             <div className="w-3/6 h-full flex flex-col justify-between">
               <div className="w-full flex justify-between p-10">
                 <Upload />
-                <div className="w-full flex">
+                <div className="w-full flex items-center justify-between">
                   <Autocomplete
                     value={pair} onChange={(event, value:string | null) => { setPair(value as ExchangePair || pair); }}
                     inputValue={inputPairValue} onInputChange={(event, value:string) => { setInputPairValue(value as ExchangePair || ""); }}
                     id="pair-selector" options={ExchangePairList} style={{ width: 300 }}
                     renderInput={(params) => <TextField {...params} label="Pair" variant="outlined" />}
                   />
-                  <ResponsiveDateRangePicker updateStartDate={setStartDate} updateEndDate={setEndDate} startDate={startDate} endDate={endDate} />
-                  <RefreshIcon className="mt-3 cursor-pointer" onClick={() => getCandles()}></RefreshIcon>
+                  <div style={{width: 290}}>
+                    <ResponsiveDateRangePicker updateStartDate={setStartDate} updateEndDate={setEndDate} startDate={startDate} endDate={endDate} />
+                  </div>
+                  <RefreshIcon className="cursor-pointer" onClick={() => getCandles()}></RefreshIcon>
                 </div>
               </div>
             <div className="flex h-3/6 pb-0">
@@ -64,7 +65,7 @@ export const ChartPage: React.FunctionComponent = () => {
               </div>
               <div className="w-2/6 px-10">
                 <div className="w-full h-full rounded-huge shadow-videocard overflow-hidden">
-                  <PositionResults positions={orders}></PositionResults>
+                  <StrategyResults></StrategyResults>
                 </div>
               </div>
             </div>
@@ -78,7 +79,7 @@ export const ChartPage: React.FunctionComponent = () => {
           </div>
             <div className="w-3/6 h-full flex flex-col">
               <div className="z-9999" style={{height: "calc(100% - 280px)"}}>
-                <Editor id="code_editor" modelsInfo={[{filename: "startegy.ts", value : "", language: "typescript"}]} />
+                <Editor id="code_editor" modelsInfo={[{filename: "startegy.ts", value : codeContent, language: "typescript"}]} />
               </div>
               { consoleLoading && <div className="relative top-0 bottom-0 l-0 r-0 m-auto" style={{width: 150, height: 150}}>
                 <img src="/images/loader.gif" alt="loader"></img>

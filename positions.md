@@ -4,7 +4,7 @@ You must provide a valid JSON file containing an array of orders :
 ```ts
 
 type Order = {
-  side : "bid" | "ask",
+  side : "short" | "long",
   pair : ExchangePair,
   quantity: number,
   price: number,

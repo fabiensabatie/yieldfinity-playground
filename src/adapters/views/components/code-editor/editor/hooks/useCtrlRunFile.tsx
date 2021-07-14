@@ -14,10 +14,11 @@ export default function useCtrlRunFile(id: string) {
   const [models, setModels] = useModels();
   const [consoleMessages, setConsoleMessages] = useConsoleMessages();
   const setConsoleCode = Store.strategies(state => state.setConsole);
+  const setPositions = Store.positions(state => state.set);
 
   let runCtrlFile = async () => {
     const code = await runFile(id, monacoInstance, models, selectedIdx, setConsoleMessages);
-    setConsoleCode(code || "")
+    setConsoleCode(code || "", setPositions)
   }
     
   return runCtrlFile;

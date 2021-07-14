@@ -1,3 +1,4 @@
+export const codeContent = `
 import { Binance, CustomTrigger, CustomTriggerFlow, CustomTriggerParameters, ExchangePair, Indicators, Strategy } from "yieldfinity";
 import { Order, Position, StopLoss, TakeProfit } from "yieldfinity/orders";
 
@@ -10,7 +11,7 @@ const BasicStrategy = ({
   
   if ((price.lastValue >=  10 * yesterdayPrice / 100 + yesterdayPrice) && (Math.ceil(price.lastValue) % 10 === 0))  
     return new Order({
-      pair, price : "market", quantity : 0.001, side:  "long",
+      pair, price : "market", quantity : 0.0001, side:  "short",
       stopLoss : new StopLoss({ reference : "pnl", value: -10 }),
       takeProfit : new TakeProfit({ reference : "pnl", value: 20 })
     });
@@ -20,15 +21,6 @@ const BasicStrategy = ({
 
 const backtest = async () => {
   try {
-    console.log("#####################################");
-    console.log("#####################################");
-    console.log("#####################################");
-    console.log("########### Yieldifinity ############");
-    console.log("#####################################");
-    console.log("Initializing yieldfinity");
-    console.log("Initializing strategy");
-
-
     const pair: ExchangePair = "BTCUSDT";
     const sDate = new Date("2021-01-07");
     const eDate = new Date("2021-01-28");
@@ -47,16 +39,15 @@ const backtest = async () => {
         new CustomTrigger({ parameters: { indicators: [price, sma], pair }, method : BasicStrategy })]
     })
 
-    
-
     // // Building the stategy & backtestnew Strategy({ indicators: [p
     const strategy = new Strategy({indicators: [price, sma], triggerFlow: customTriggerFlow, exchanges: [binance] });
-  
+
     strategy.run(candles);
     const profit = strategy.profit;
     const pnl = strategy.pnl;
-    const profitablePositions = Math.ceil(strategy.profitablePositions.length / strategy.positions.length * 100);
-    console.log(`Strategy made a profit of ${profit} (${pnl}%) : ${profitablePositions}% of positions were profitable`);
+    console.log(strategy.profitablePositions.length, strategy.closedPositions.length, strategy.positions.length);
+    const profitablePositions = Math.ceil(strategy.profitablePositions.length / (strategy.positions.length + strategy.closedPositions.length) * 100);
+    console.log(\`Strategy made a profit of \${profit} (\${pnl}%) : \${profitablePositions}% of positions were profitable - \${strategy.capitalInvested}\`);
     
     return strategy;
   }
@@ -65,3 +56,5 @@ const backtest = async () => {
   }
 }
 
+
+`;

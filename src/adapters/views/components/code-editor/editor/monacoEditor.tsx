@@ -51,6 +51,7 @@ function App({
   const [consoleMessages, setConsoleMessages] = useConsoleMessages();
 
   const setConsoleCode = Store.strategies(state => state.setConsole);
+  const setPositions = Store.positions(state => state.set);
 
   const editorCallbackRef = useCallback((ref: editor.IStandaloneCodeEditor) => {
     setCtxEditor(ref);
@@ -98,7 +99,9 @@ function App({
   useEffect(() => {
     if (ctrlCounter > 0) {
       runFile(id, monacoInstance, models, selectedIdx, setConsoleMessages)
-      .then(code => {setConsoleCode(code ||"")})
+      .then(code => {
+        setConsoleCode(code ||"", setPositions)
+      })
     }
   }, [ctrlCounter]);
 

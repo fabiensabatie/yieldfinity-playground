@@ -50,10 +50,10 @@ export default async function runFile(
     ranModels.map(model => model.uri.path);
 
     //If type errors log and don't run files.
-    const errors = getErrors(monacoInstance, ranModels);
-    errors.map(error => console.error(error, editorId));
+    // const errors = getErrors(monacoInstance, ranModels);
+    // errors.map(error => console.error(error, editorId));
     //Concat files
-    if (!errors.length) {
+    // if (!errors.length) {
       const lines =
         ranModels
           .map(model =>
@@ -79,8 +79,25 @@ export default async function runFile(
       const importLines = appendPackageImports(monacoInstance, lines).join('\n')
 
       const compiled =  TSCompileService(importLines + lines).replaceAll('"use strict";', "");
-      return compiled + "\nexports.endpoint = async (request, response) => { response.write(JSON.stringify(await backtest())); response.end(); } "
-    }
+      return `
+      console.log("#####################################");
+      console.log("#####################################");
+      console.log("#####################################");
+      console.log("########### Yieldifinity ############");
+      console.log("#####################################");
+      
+    ` + compiled + `
+        const endpoint = async (request, response) => {
+          const strategy = await backtest();
+          const closedPositions = strategy.closedPositions;
+          const positions = closedPositions.map(position => ({ side: position.side, pair: position.pair, quantity: position.quantity, price: position.price, state: position.state }));
+          const results = { pnl : strategy.pnl, profit : strategy.profit, capitalInvested: strategy.capitalInvested };
+          response.write(JSON.stringify({ positions, results }));
+          response.end();
+        }
+        
+        exports.endpoint = endpoint;
+      `
   }
 }
 

@@ -1,6 +1,6 @@
 [
   {
-    "side": "bid",
+    "side": "short",
     "pair": "BTCUSDT",
     "quantity": 1,
     "price": 10000,
@@ -12,7 +12,7 @@
     }
   },
   {
-    "side": "ask",
+    "side": "long",
     "pair": "BTCUSDT",
     "quantity": 1,
     "price": 52,
@@ -24,7 +24,7 @@
     }
   },
   {
-    "side": "ask",
+    "side": "long",
     "pair": "BTCUSDT",
     "quantity": 1,
     "price": 3700,
@@ -36,7 +36,7 @@
     }
   },
   {
-    "side": "ask",
+    "side": "long",
     "pair": "BTCUSDT",
     "quantity": 1,
     "price": 70,
@@ -48,7 +48,7 @@
     }
   },
   {
-    "side": "ask",
+    "side": "long",
     "pair": "BTCUSDT",
     "quantity": 1,
     "price": 70,
@@ -60,7 +60,7 @@
     }
   },
   {
-    "side": "ask",
+    "side": "long",
     "pair": "BTCUSDT",
     "quantity": 1,
     "price": 70,
@@ -72,7 +72,7 @@
     }
   },
   {
-    "side": "ask",
+    "side": "long",
     "pair": "BTCUSDT",
     "quantity": 1,
     "price": 42,
@@ -84,7 +84,7 @@
     }
   },
   {
-    "side": "ask",
+    "side": "long",
     "pair": "ETHUSDT",
     "quantity": 1,
     "price": 2500,
@@ -96,7 +96,7 @@
     }
   },
   {
-    "side": "ask",
+    "side": "long",
     "pair": "ETHUSDT",
     "quantity": 1,
     "price": 70,
@@ -108,7 +108,7 @@
     }
   },
   {
-    "side": "ask",
+    "side": "long",
     "pair": "BTCUSDT",
     "quantity": 1,
     "price": 70,
@@ -120,7 +120,7 @@
     }
   },
   {
-    "side": "ask",
+    "side": "long",
     "pair": "ETHUSDT",
     "quantity": 1,
     "price": 70,
@@ -132,7 +132,7 @@
     }
   },
   {
-    "side": "ask",
+    "side": "long",
     "pair": "ETHUSDT",
     "quantity": 1,
     "price": 70,
@@ -144,7 +144,7 @@
     }
   },
   {
-    "side": "ask",
+    "side": "long",
     "pair": "BTCUSDT",
     "quantity": 1,
     "price": 70,
@@ -156,7 +156,7 @@
     }
   },
   {
-    "side": "ask",
+    "side": "long",
     "pair": "ETHUSDT",
     "quantity": 1,
     "price": 78,

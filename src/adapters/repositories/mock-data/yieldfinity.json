@@ -5,8 +5,48 @@
     "language": "typescript"
   },
   {
-    "value": "import { Indicator } from \"../../domain/entities/indicator\";\r\nimport { SMAIndicatorParameters } from \"../../domain/port/entities/indicators/sma.port\";\r\nimport { IndicatorsFactoryInterface } from \"../../domain/port/factories/indicators.factory.port\";\r\nimport { EMAIndicatorParameters } from \"../../domain/port/entities/indicators/ema.port\";\r\nimport { RSIIndicatorParameters } from \"../../domain/port/entities/indicators/rsi.port\";\r\nimport { MACDIndicatorParameters } from \"../../domain/port/entities/indicators/macd.port\";\r\nimport { ATRIndicatorParameters } from \"../../domain/port/entities/indicators/atr.port\";\r\nimport { IndicatorDependencies } from \"../../domain/port/entities/indicator.port\";\r\nimport { PriceIndicatorParameters } from \"../../domain/port/entities/indicators/price.port\";\r\nexport declare class Indicators implements IndicatorsFactoryInterface {\r\n    private dependencies;\r\n    indicatorDependencies: IndicatorDependencies;\r\n    triggers: {\r\n        sma: string[];\r\n        ema: string[];\r\n        rsi: string[];\r\n        atr: string[];\r\n        macd: string[];\r\n    };\r\n    sma(parameters: SMAIndicatorParameters): Indicator;\r\n    ema(parameters: EMAIndicatorParameters): Indicator;\r\n    rsi(parameters: RSIIndicatorParameters): Indicator;\r\n    macd(parameters: MACDIndicatorParameters): Indicator;\r\n    atr(parameters: ATRIndicatorParameters): Indicator;\r\n    price(parameters: PriceIndicatorParameters): Indicator;\r\n}\r\n",
+    "value": "import { Indicator } from \"../../domain/entities/indicator\";\r\nimport { AverageGainIndicatorParameters } from \"../../domain/port/entities/indicators/average-gain.port\";\r\nimport { AverageLossIndicatorParameters } from \"../../domain/port/entities/indicators/average-loss.port\";\r\nimport { EMAIndicatorParameters } from \"../../domain/port/entities/indicators/ema.port\";\r\nimport { MACDIndicatorParameters } from \"../../domain/port/entities/indicators/macd.port\";\r\nimport { PriceIndicatorParameters } from \"../../domain/port/entities/indicators/price.port\";\r\nimport { RSIIndicatorParameters } from \"../../domain/port/entities/indicators/rsi.port\";\r\nimport { SMAIndicatorParameters } from \"../../domain/port/entities/indicators/sma.port\";\r\nimport { IndicatorsFactoryInterface } from \"../../domain/port/factories/indicators.factory.port\";\r\nexport declare class Indicators implements IndicatorsFactoryInterface {\r\n    triggers: {\r\n        sma: string[];\r\n        ema: string[];\r\n        rsi: string[];\r\n        atr: string[];\r\n        macd: string[];\r\n    };\r\n    sma(parameters: SMAIndicatorParameters): Indicator;\r\n    ema(parameters: EMAIndicatorParameters): Indicator;\r\n    rsi(parameters: RSIIndicatorParameters): Indicator;\r\n    macd(parameters: MACDIndicatorParameters): Indicator;\r\n    price(parameters: PriceIndicatorParameters): Indicator;\r\n    averageGain(parameters: AverageGainIndicatorParameters): Indicator;\r\n    averageLoss(parameters: AverageLossIndicatorParameters): Indicator;\r\n}\r\n",
     "filename": "file:///node_modules/yieldfinity/adapters/factories/indicators.factory.d.ts",
+    "language": "typescript"
+  },
+  {
+    "value": "import { ATRMethodBuilder } from \"../../../domain\";\r\ndeclare const ATR: ATRMethodBuilder;\r\nexport default ATR;\r\n",
+    "filename": "file:///node_modules/yieldfinity/adapters/factories/indicators/atr.indicator-method.d.ts",
+    "language": "typescript"
+  },
+  {
+    "value": "import { AverageGainMethodBuilder } from \"../../../domain/port/entities/indicators/average-gain.port\";\r\ndeclare const AverageGain: AverageGainMethodBuilder;\r\nexport default AverageGain;\r\n",
+    "filename": "file:///node_modules/yieldfinity/adapters/factories/indicators/average-gain.method.d.ts",
+    "language": "typescript"
+  },
+  {
+    "value": "import { AverageLossMethodBuilder } from \"../../../domain/port/entities/indicators/average-loss.port\";\r\ndeclare const AverageLoss: AverageLossMethodBuilder;\r\nexport default AverageLoss;\r\n",
+    "filename": "file:///node_modules/yieldfinity/adapters/factories/indicators/average-loss.method.d.ts",
+    "language": "typescript"
+  },
+  {
+    "value": "import { EMAMethodBuilder } from \"../../../domain\";\r\ndeclare const ema: (period: number, lastValue: number, price: number, smoothing?: number) => number;\r\ndeclare const EMA: EMAMethodBuilder;\r\nexport { ema };\r\nexport default EMA;\r\n",
+    "filename": "file:///node_modules/yieldfinity/adapters/factories/indicators/ema.indicator-method.d.ts",
+    "language": "typescript"
+  },
+  {
+    "value": "import { MACDMethodBuilder } from \"../../../domain\";\r\ndeclare const MACD: MACDMethodBuilder;\r\nexport default MACD;\r\n",
+    "filename": "file:///node_modules/yieldfinity/adapters/factories/indicators/macd.indicator-method.d.ts",
+    "language": "typescript"
+  },
+  {
+    "value": "import { PriceMethodBuilder } from \"../../../domain\";\r\ndeclare const Price: PriceMethodBuilder;\r\nexport default Price;\r\n",
+    "filename": "file:///node_modules/yieldfinity/adapters/factories/indicators/price.indicator-method.d.ts",
+    "language": "typescript"
+  },
+  {
+    "value": "import { RSIMethodBuilder } from \"../../../domain\";\r\ndeclare const RSI: RSIMethodBuilder;\r\nexport default RSI;\r\n",
+    "filename": "file:///node_modules/yieldfinity/adapters/factories/indicators/rsi.indicator-method.d.ts",
+    "language": "typescript"
+  },
+  {
+    "value": "import { SMAMethodBuilder } from \"../../../domain\";\r\ndeclare const SMA: SMAMethodBuilder;\r\nexport default SMA;\r\n",
+    "filename": "file:///node_modules/yieldfinity/adapters/factories/indicators/sma.indicator-method.d.ts",
     "language": "typescript"
   },
   {
@@ -20,13 +60,8 @@
     "language": "typescript"
   },
   {
-    "value": "export * from './candle.mapper';\r\nexport * from './indicator-method.mapper';\r\n",
+    "value": "export * from './candle.mapper';\r\n",
     "filename": "file:///node_modules/yieldfinity/adapters/mappers/index.d.ts",
-    "language": "typescript"
-  },
-  {
-    "value": "import { Candle } from \"../../domain/entities/candle\";\r\nimport { ATRIndicatorInput } from \"../../domain/port/entities/indicators/atr.port\";\r\nimport { EMAIndicatorInput } from \"../../domain/port/entities/indicators/ema.port\";\r\nimport { MACDIndicatorInput } from \"../../domain/port/entities/indicators/macd.port\";\r\nimport { PriceIndicatorInput, PriceIndicatorParameters } from \"../../domain/port/entities/indicators/price.port\";\r\nimport { RSIIndicatorInput } from \"../../domain/port/entities/indicators/rsi.port\";\r\nimport { SMAIndicatorInput } from \"../../domain/port/entities/indicators/sma.port\";\r\nimport { IndicatorMethodParametersMapperInterface } from \"../../domain/port/mappers/indicator-method-parameters-mapper.port\";\r\nexport declare class IndicatorMethodParametersMapper implements IndicatorMethodParametersMapperInterface {\r\n    sma: (candle: Candle) => SMAIndicatorInput;\r\n    ema: (candle: Candle) => EMAIndicatorInput;\r\n    rsi: (candle: Candle) => RSIIndicatorInput;\r\n    macd: (candle: Candle) => MACDIndicatorInput;\r\n    atr: (candle: Candle) => ATRIndicatorInput;\r\n    price: (candle: Candle, parameters: PriceIndicatorParameters) => PriceIndicatorInput;\r\n}\r\n",
-    "filename": "file:///node_modules/yieldfinity/adapters/mappers/indicator-method.mapper.d.ts",
     "language": "typescript"
   },
   {
@@ -40,12 +75,12 @@
     "language": "typescript"
   },
   {
-    "value": "import { Options } from \"csv-parse\";\r\nimport { CsvService } from \"../../domain/port/services/csv.port\";\r\nimport { FileService } from \"../../domain/port/services/file.port\";\r\ninterface CsvServiceDependencies {\r\n    file: FileService;\r\n}\r\nexport declare type CsvParserOptions = Options;\r\nexport declare class Csv implements CsvService {\r\n    private dependencies;\r\n    constructor(dependencies: CsvServiceDependencies);\r\n    parse(filePath: string, options?: CsvParserOptions): Promise<string[][]>;\r\n}\r\nexport {};\r\n",
+    "value": "import { Options } from \"csv-parse\";\r\nimport { CsvService } from \"../../domain/port/services/csv.port\";\r\nexport declare type CsvParserOptions = Options;\r\nexport declare class Csv implements CsvService {\r\n    constructor();\r\n    parse(content: string, options?: CsvParserOptions): Promise<string[][]>;\r\n}\r\n",
     "filename": "file:///node_modules/yieldfinity/adapters/services/csv.service.d.ts",
     "language": "typescript"
   },
   {
-    "value": "import { FileService } from \"../../domain/port/services/file.port\";\r\nexport declare class File implements FileService {\r\n    delete(filePath: string): Promise<void>;\r\n    read(filePath: string): Promise<string>;\r\n    download(url: string, filename: string, destination: string): Promise<void>;\r\n}\r\n",
+    "value": "/// <reference types=\"node\" />\r\nimport { FileService } from \"../../domain/port/services/file.port\";\r\nexport declare class File implements FileService {\r\n    downloadAsBuffer(url: string): Promise<Buffer>;\r\n}\r\n",
     "filename": "file:///node_modules/yieldfinity/adapters/services/file.service.d.ts",
     "language": "typescript"
   },
@@ -55,7 +90,7 @@
     "language": "typescript"
   },
   {
-    "value": "import { ZipService } from \"../../domain/port/services/zip.port\";\r\nexport declare class Zip implements ZipService {\r\n    unzip(path: string, destinationFilename: string, destinationPath: string): Promise<void>;\r\n}\r\n",
+    "value": "/// <reference types=\"node\" />\r\nimport { ZipService } from \"../../domain/port/services/zip.port\";\r\nexport declare class Zip implements ZipService {\r\n    unzipBuffer(buffer: Buffer, fileToExtract: string): Promise<string>;\r\n}\r\n",
     "filename": "file:///node_modules/yieldfinity/adapters/services/zip.service.d.ts",
     "language": "typescript"
   },
@@ -80,7 +115,7 @@
     "language": "typescript"
   },
   {
-    "value": "import { IndicatorDependencies, IndicatorOutput, IndicatorParameters, IndicatorProps, IndicatorsName } from \"../port/entities/indicator.port\";\r\nimport { Candle } from \"./candle\";\r\nexport declare type IndicatorsList = {\r\n    [key in IndicatorsName]: Indicator[];\r\n};\r\nexport declare class Indicator {\r\n    private props;\r\n    private dependencies;\r\n    private generated;\r\n    constructor(props: IndicatorProps, dependencies: IndicatorDependencies);\r\n    get method(): Function;\r\n    get name(): string;\r\n    get values(): IndicatorOutput[];\r\n    get parameters(): IndicatorParameters;\r\n    get lastValue(): IndicatorOutput;\r\n    get lastIndex(): number;\r\n    generate(candle: Candle): any;\r\n}\r\n",
+    "value": "import { IndicatorMethod, IndicatorOutput, IndicatorParameters, IndicatorProps, IndicatorsName } from \"../port/entities/indicator.port\";\r\nimport { Candle } from \"./candle\";\r\nexport declare type IndicatorsList = {\r\n    [key in IndicatorsName]: Indicator[];\r\n};\r\nexport declare class Indicator {\r\n    private props;\r\n    private _generated;\r\n    constructor(props: IndicatorProps);\r\n    get method(): IndicatorMethod;\r\n    get name(): string;\r\n    get values(): IndicatorOutput[];\r\n    get parameters(): IndicatorParameters;\r\n    get lastValue(): IndicatorOutput;\r\n    get lastIndex(): number;\r\n    generate: (candle: Candle) => IndicatorOutput;\r\n}\r\n",
     "filename": "file:///node_modules/yieldfinity/domain/entities/indicator.d.ts",
     "language": "typescript"
   },
@@ -95,7 +130,7 @@
     "language": "typescript"
   },
   {
-    "value": "import { OrderParameters, OrderSide, OrderState } from \"../../port/entities/orders/order.port\";\r\nimport { ExchangePair } from \"../../port/repositories/exchange.port\";\r\nimport { Candle } from \"../candle\";\r\nimport { StopLoss } from \"./stop-loss\";\r\nimport { TakeProfit } from \"./take-profit\";\r\nexport declare class Order {\r\n    private props;\r\n    private _startPrice;\r\n    private _open;\r\n    private _state;\r\n    constructor(props: OrderParameters);\r\n    get side(): OrderSide;\r\n    get pair(): ExchangePair;\r\n    get quantity(): number;\r\n    get price(): number | \"market\";\r\n    get startPrice(): number;\r\n    get state(): OrderState;\r\n    get opened(): boolean;\r\n    get stopLoss(): StopLoss;\r\n    get takeProfit(): TakeProfit;\r\n    close: (candle: Candle) => void;\r\n    open: (candle: Candle) => void;\r\n    private updateProfitAndLoss;\r\n    triggerStopLossTakeProfitIfNecessary: (candle: Candle) => void;\r\n}\r\n",
+    "value": "import { OrderProps, OrderSide, OrderState } from \"../../port/entities/orders/order.port\";\r\nimport { ExchangePair } from \"../../port/repositories/exchange.port\";\r\nimport { Candle } from \"../candle\";\r\nimport { StopLoss } from \"./stop-loss\";\r\nimport { TakeProfit } from \"./take-profit\";\r\nexport declare class Order {\r\n    private props;\r\n    private _startPrice;\r\n    private _open;\r\n    private _state;\r\n    constructor(props: OrderProps);\r\n    get side(): OrderSide;\r\n    get pair(): ExchangePair;\r\n    get quantity(): number;\r\n    get price(): number | \"market\";\r\n    get startPrice(): number;\r\n    get state(): OrderState;\r\n    get opened(): boolean;\r\n    get stopLoss(): StopLoss;\r\n    get takeProfit(): TakeProfit;\r\n    close: (candle: Candle) => void;\r\n    open: (candle: Candle) => void;\r\n    private updateProfitAndLoss;\r\n    triggerStopLossTakeProfitIfNecessary: (candle: Candle) => void;\r\n}\r\n",
     "filename": "file:///node_modules/yieldfinity/domain/entities/orders/order.d.ts",
     "language": "typescript"
   },
@@ -110,7 +145,7 @@
     "language": "typescript"
   },
   {
-    "value": "import { Candle } from \"./candle\";\r\nimport { Indicator, IndicatorsList } from \"./indicator\";\r\nimport { StrategyProps } from \"../port/entities/strategy.port\";\r\nimport { Position } from \"../port/entities/orders/position.port\";\r\nimport { TriggerFlow } from \"./trigger-flow\";\r\nimport { CustomTriggerFlow } from \"./custom-trigger-flow\";\r\nimport { ExchangeRepository } from \"../port/repositories/exchange.port\";\r\nexport declare class Strategy {\r\n    private props;\r\n    private _positions;\r\n    private _positionsFile;\r\n    constructor(props: StrategyProps);\r\n    get indicator(): Indicator[];\r\n    get triggerFlow(): TriggerFlow | CustomTriggerFlow;\r\n    get exchanges(): ExchangeRepository[];\r\n    get positions(): Position[];\r\n    get closedPositions(): Position[];\r\n    get profitablePositions(): Position[];\r\n    get lostPositions(): Position[];\r\n    get profit(): number;\r\n    get pnl(): number;\r\n    get indicators(): IndicatorsList;\r\n    private appendPositions;\r\n    run(candles: Candle[]): void;\r\n    savePositions(): void;\r\n}\r\n",
+    "value": "import { Candle } from \"./candle\";\r\nimport { Indicator, IndicatorsList } from \"./indicator\";\r\nimport { StrategyProps } from \"../port/entities/strategy.port\";\r\nimport { Position } from \"../port/entities/orders/position.port\";\r\nimport { TriggerFlow } from \"./trigger-flow\";\r\nimport { CustomTriggerFlow } from \"./custom-trigger-flow\";\r\nimport { ExchangeRepository } from \"../port/repositories/exchange.port\";\r\nexport declare class Strategy {\r\n    private props;\r\n    private _positions;\r\n    private _closedPositions;\r\n    constructor(props: StrategyProps);\r\n    get indicator(): Indicator[];\r\n    get triggerFlow(): TriggerFlow | CustomTriggerFlow;\r\n    get exchanges(): ExchangeRepository[];\r\n    get positions(): Position[];\r\n    get closedPositions(): Position[];\r\n    get profitablePositions(): Position[];\r\n    get lostPositions(): Position[];\r\n    get profit(): number;\r\n    get pnl(): number;\r\n    get indicators(): IndicatorsList;\r\n    run(candles: Candle[]): void;\r\n}\r\n",
     "filename": "file:///node_modules/yieldfinity/domain/entities/strategy.d.ts",
     "language": "typescript"
   },
@@ -170,11 +205,6 @@
     "language": "typescript"
   },
   {
-    "value": "import { ExchangeInterval, ExchangePair } from \"../repositories/exchange.port\";\r\nexport interface CandleIntervalProps {\r\n    id?: number;\r\n    startDate: Date;\r\n    endDate: Date;\r\n    exchange: string;\r\n    pair: ExchangePair;\r\n    interval: ExchangeInterval;\r\n}\r\n",
-    "filename": "file:///node_modules/yieldfinity/domain/port/entities/candle-interval.port.d.ts",
-    "language": "typescript"
-  },
-  {
     "value": "import { ExchangeInterval, ExchangePair } from \"../repositories/exchange.port\";\r\nexport interface CandleProps {\r\n    openAt: Date;\r\n    closeAt: Date;\r\n    open: number;\r\n    close: number;\r\n    high: number;\r\n    low: number;\r\n    volume: number;\r\n    exchange: string;\r\n    pair: ExchangePair;\r\n    interval: ExchangeInterval;\r\n}\r\n",
     "filename": "file:///node_modules/yieldfinity/domain/port/entities/candle.port.d.ts",
     "language": "typescript"
@@ -190,97 +220,27 @@
     "language": "typescript"
   },
   {
-    "value": "import { IndicatorMethodParametersMapperInterface } from \"../mappers/indicator-method-parameters-mapper.port\";\r\nimport { ATRIndicator, ATRIndicatorOutput, ATRIndicatorInput, ATRIndicatorParameters } from \"./indicators/atr.port\";\r\nimport { EMAIndicator, EMAIndicatorOutput, EMAIndicatorInput, EMAIndicatorParameters } from \"./indicators/ema.port\";\r\nimport { MACDIndicator, MACDIndicatorOutput, MACDIndicatorInput, MACDIndicatorParameters } from \"./indicators/macd.port\";\r\nimport { RSIIndicator, RSIIndicatorOutput, RSIIndicatorInput, RSIIndicatorParameters } from \"./indicators/rsi.port\";\r\nimport { SMAIndicator, SMAIndicatorOutput, SMAIndicatorInput, SMAIndicatorParameters } from \"./indicators/sma.port\";\r\nimport { PriceIndicator, PriceIndicatorInput, PriceIndicatorOutput, PriceIndicatorParameters } from \"./indicators/price.port\";\r\nexport declare const IndicatorNames: readonly [\"sma\", \"ema\", \"rsi\", \"macd\", \"bearish\", \"bullish\", \"atr\", \"price\"];\r\nexport declare type IndicatorsName = typeof IndicatorNames[number];\r\nexport declare type IndicatorProps = SMAIndicator | EMAIndicator | RSIIndicator | MACDIndicator | ATRIndicator | PriceIndicator;\r\nexport declare type IndicatorParameters = SMAIndicatorParameters | EMAIndicatorParameters | RSIIndicatorParameters | MACDIndicatorParameters | ATRIndicatorParameters | PriceIndicatorParameters;\r\nexport declare type IndicatorInput = SMAIndicatorInput | EMAIndicatorInput | RSIIndicatorInput | MACDIndicatorInput | ATRIndicatorInput | PriceIndicatorInput;\r\nexport declare type IndicatorOutput = SMAIndicatorOutput | EMAIndicatorOutput | RSIIndicatorOutput | MACDIndicatorOutput | ATRIndicatorOutput | PriceIndicatorOutput;\r\nexport interface Values {\r\n    values: number[];\r\n}\r\nexport interface IndicatorDependencies {\r\n    mapper: IndicatorMethodParametersMapperInterface;\r\n}\r\n",
+    "value": "import { ATRIndicator, ATRIndicatorOutput, ATRIndicatorInput, ATRIndicatorParameters } from \"./indicators/atr.port\";\r\nimport { EMAIndicator, EMAIndicatorOutput, EMAIndicatorInput, EMAIndicatorParameters } from \"./indicators/ema.port\";\r\nimport { MACDIndicator, MACDIndicatorOutput, MACDIndicatorInput, MACDIndicatorParameters } from \"./indicators/macd.port\";\r\nimport { RSIIndicator, RSIIndicatorOutput, RSIIndicatorInput, RSIIndicatorParameters } from \"./indicators/rsi.port\";\r\nimport { SMAIndicator, SMAIndicatorOutput, SMAIndicatorInput, SMAIndicatorParameters } from \"./indicators/sma.port\";\r\nimport { PriceIndicator, PriceIndicatorInput, PriceIndicatorOutput, PriceIndicatorParameters } from \"./indicators/price.port\";\r\nimport { Candle } from \"../../entities\";\r\nimport { AverageGainIndicator, AverageGainIndicatorInput, AverageGainIndicatorOutput, AverageGainIndicatorParameters } from \"./indicators/average-gain.port\";\r\nimport { AverageLossIndicator, AverageLossIndicatorInput, AverageLossIndicatorOutput, AverageLossIndicatorParameters } from \"./indicators/average-loss.port\";\r\nexport declare const IndicatorNames: readonly [\"sma\", \"ema\", \"rsi\", \"macd\", \"bearish\", \"bullish\", \"atr\", \"price\"];\r\nexport declare type IndicatorsName = typeof IndicatorNames[number];\r\nexport declare type IndicatorProps = SMAIndicator | EMAIndicator | RSIIndicator | MACDIndicator | ATRIndicator | PriceIndicator | AverageGainIndicator | AverageLossIndicator;\r\nexport declare type IndicatorParameters = SMAIndicatorParameters | EMAIndicatorParameters | RSIIndicatorParameters | MACDIndicatorParameters | ATRIndicatorParameters | PriceIndicatorParameters | AverageGainIndicatorParameters | AverageLossIndicatorParameters;\r\nexport declare type IndicatorInput = SMAIndicatorInput | EMAIndicatorInput | RSIIndicatorInput | MACDIndicatorInput | ATRIndicatorInput | PriceIndicatorInput | AverageGainIndicatorInput | AverageLossIndicatorInput;\r\nexport declare type IndicatorOutput = SMAIndicatorOutput | EMAIndicatorOutput | RSIIndicatorOutput | MACDIndicatorOutput | ATRIndicatorOutput | PriceIndicatorOutput | AverageGainIndicatorOutput | AverageLossIndicatorOutput;\r\nexport declare type IndicatorMethod = (parameters: {\r\n    candle: Candle;\r\n    values: IndicatorOutput[];\r\n    lastValue: IndicatorOutput;\r\n    lastIndex: number;\r\n}) => IndicatorOutput;\r\nexport interface Values {\r\n    values: number[];\r\n}\r\n",
     "filename": "file:///node_modules/yieldfinity/domain/port/entities/indicator.port.d.ts",
     "language": "typescript"
   },
   {
-    "value": "import { Position } from \"../order/position.port\";\r\nexport interface ATRIndicatorParameters {\r\n    period: number;\r\n}\r\nexport interface ATRIndicatorInput {\r\n    low: number;\r\n    high: number;\r\n    close: number;\r\n}\r\nexport declare type ATRIndicatorOutput = number;\r\nexport interface ATRMethod {\r\n    (prices: ATRIndicatorInput): ATRIndicatorOutput;\r\n}\r\nexport interface ATRIndicator {\r\n    name: \"atr\";\r\n    method: ATRMethod;\r\n    parameters: ATRIndicatorParameters;\r\n}\r\nexport declare type ATRIndicatorTriggerValidator = (output: ATRIndicatorOutput) => Position[];\r\n",
-    "filename": "file:///node_modules/yieldfinity/domain/port/entities/indicator/atr.port.d.ts",
-    "language": "typescript"
-  },
-  {
-    "value": "import { Position } from \"../order/position.port\";\r\nexport interface EMAIndicatorParameters {\r\n    period: number;\r\n}\r\nexport declare type EMAIndicatorOutput = number;\r\nexport declare type EMAIndicatorInput = number;\r\nexport interface EMAMethod {\r\n    (price: EMAIndicatorInput): EMAIndicatorOutput;\r\n}\r\nexport interface EMAIndicator {\r\n    name: \"ema\";\r\n    method: EMAMethod;\r\n    parameters: EMAIndicatorParameters;\r\n}\r\nexport declare type EMAIndicatorTriggerValidator = (output: EMAIndicatorOutput) => Position[];\r\n",
-    "filename": "file:///node_modules/yieldfinity/domain/port/entities/indicator/ema.port.d.ts",
-    "language": "typescript"
-  },
-  {
-    "value": "export * from './triggers';\r\nexport * from './atr.port';\r\nexport * from './ema.port';\r\nexport * from './macd.port';\r\nexport * from './price.port';\r\nexport * from './rsi.port';\r\nexport * from './sma.port';\r\n",
-    "filename": "file:///node_modules/yieldfinity/domain/port/entities/indicator/index.d.ts",
-    "language": "typescript"
-  },
-  {
-    "value": "import { Position } from \"../order/position.port\";\r\nexport interface MACDIndicatorParameters {\r\n    SimpleMAOscillator: boolean;\r\n    SimpleMASignal: boolean;\r\n    fastPeriod: number;\r\n    slowPeriod: number;\r\n    signalPeriod: number;\r\n}\r\nexport declare type MACDIndicatorOutput = {\r\n    MACD?: number;\r\n    signal?: number;\r\n    histogram?: number;\r\n};\r\nexport declare type MACDIndicatorInput = number;\r\nexport interface MACDMethod {\r\n    (price: MACDIndicatorInput): MACDIndicatorOutput;\r\n}\r\nexport interface MACDIndicator {\r\n    name: \"macd\";\r\n    method: MACDMethod;\r\n    parameters: MACDIndicatorParameters;\r\n}\r\nexport declare type MACDIndicatorTriggerValidator = (output: MACDIndicatorOutput) => Position[];\r\n",
-    "filename": "file:///node_modules/yieldfinity/domain/port/entities/indicator/macd.port.d.ts",
-    "language": "typescript"
-  },
-  {
-    "value": "import { Position } from \"../order/position.port\";\r\nexport declare type PriceIndicatorMode = \"high\" | \"low\" | \"open\" | \"close\";\r\nexport interface PriceIndicatorParameters {\r\n    mode: PriceIndicatorMode;\r\n}\r\nexport declare type PriceIndicatorInput = number;\r\nexport declare type PriceIndicatorOutput = number;\r\nexport interface PriceMethod {\r\n    (prices: PriceIndicatorInput): PriceIndicatorOutput;\r\n}\r\nexport interface PriceIndicator {\r\n    name: \"price\";\r\n    method: PriceMethod;\r\n    parameters: PriceIndicatorParameters;\r\n}\r\nexport declare type PriceIndicatorTriggerValidator = (output: PriceIndicatorOutput) => Position[];\r\n",
-    "filename": "file:///node_modules/yieldfinity/domain/port/entities/indicator/price.port.d.ts",
-    "language": "typescript"
-  },
-  {
-    "value": "import { Position } from \"../order/position.port\";\r\nexport interface RSIIndicatorParameters {\r\n    period: number;\r\n}\r\nexport declare type RSIIndicatorOutput = number;\r\nexport declare type RSIIndicatorInput = number;\r\nexport interface RSIMethod {\r\n    (price: RSIIndicatorInput): RSIIndicatorOutput;\r\n}\r\nexport interface RSIIndicator {\r\n    name: \"rsi\";\r\n    method: RSIMethod;\r\n    parameters: RSIIndicatorParameters;\r\n}\r\nexport declare type RSIIndicatorTriggerValidator = (output: RSIIndicatorOutput) => Position[];\r\n",
-    "filename": "file:///node_modules/yieldfinity/domain/port/entities/indicator/rsi.port.d.ts",
-    "language": "typescript"
-  },
-  {
-    "value": "import { Position } from \"../order/position.port\";\r\nexport interface SMAIndicatorParameters {\r\n    period: number;\r\n}\r\nexport declare type SMAIndicatorOutput = number;\r\nexport declare type SMAIndicatorInput = number;\r\nexport interface SMAMethod {\r\n    (price: SMAIndicatorInput): SMAIndicatorOutput;\r\n}\r\nexport interface SMAIndicator {\r\n    name: \"sma\";\r\n    method: SMAMethod;\r\n    parameters: SMAIndicatorParameters;\r\n}\r\nexport declare type SMAIndicatorTriggerValidator = (output: SMAIndicatorOutput) => Position[];\r\n",
-    "filename": "file:///node_modules/yieldfinity/domain/port/entities/indicator/sma.port.d.ts",
-    "language": "typescript"
-  },
-  {
-    "value": "import { IndicatorTriggerProps } from \"./indicator-trigger.port\";\r\nexport interface ATRTriggerProps extends IndicatorTriggerProps {\r\n    field: \"value\";\r\n}\r\n",
-    "filename": "file:///node_modules/yieldfinity/domain/port/entities/indicator/triggers/atr.trigger.port.d.ts",
-    "language": "typescript"
-  },
-  {
-    "value": "import { Position } from \"../../order/position.port\";\r\nexport interface CustomTriggerParameters {\r\n    [key: string]: any;\r\n}\r\nexport interface CustomTriggerProps {\r\n    parameters: CustomTriggerParameters;\r\n    method: (parameters: CustomTriggerParameters) => Position | null | undefined | false;\r\n}\r\n",
-    "filename": "file:///node_modules/yieldfinity/domain/port/entities/indicator/triggers/custom.trigger.port.d.ts",
-    "language": "typescript"
-  },
-  {
-    "value": "import { IndicatorTriggerProps } from \"./indicator-trigger.port\";\r\nexport interface EMATriggerProps extends IndicatorTriggerProps {\r\n    field: \"value\";\r\n}\r\n",
-    "filename": "file:///node_modules/yieldfinity/domain/port/entities/indicator/triggers/ema.trigger.port.d.ts",
-    "language": "typescript"
-  },
-  {
-    "value": "export * from './atr.trigger.port';\r\nexport * from './custom.trigger.port';\r\nexport * from './ema.trigger.port';\r\nexport * from './indicator-trigger.port';\r\nexport * from './macd.trigger.port';\r\nexport * from './price.trigger.port';\r\nexport * from './rsi.trigger.port';\r\nexport * from './sma.trigger.port';\r\n",
-    "filename": "file:///node_modules/yieldfinity/domain/port/entities/indicator/triggers/index.d.ts",
-    "language": "typescript"
-  },
-  {
-    "value": "import { Indicator } from \"../../../../entities/indicator\";\r\nexport declare type Comparer = \"<\" | \">\" | \"<=\" | \">=\" | \"=\";\r\nexport declare type ComparerMode = \"relative\" | \"absolute\" | \"percentage\";\r\nexport interface IndicatorTriggerProps {\r\n    indicator: Indicator;\r\n    field: string;\r\n    triggerField?: string;\r\n    triggerValue: number;\r\n    tMinus?: number;\r\n    comparer: Comparer;\r\n    mode: ComparerMode;\r\n}\r\n",
-    "filename": "file:///node_modules/yieldfinity/domain/port/entities/indicator/triggers/indicator-trigger.port.d.ts",
-    "language": "typescript"
-  },
-  {
-    "value": "import { IndicatorTriggerProps } from \"./indicator-trigger.port\";\r\nexport interface MACDTriggerProps extends IndicatorTriggerProps {\r\n    field: \"MACD\" | \"signal\" | \"histogram\";\r\n}\r\n",
-    "filename": "file:///node_modules/yieldfinity/domain/port/entities/indicator/triggers/macd.trigger.port.d.ts",
-    "language": "typescript"
-  },
-  {
-    "value": "import { IndicatorTriggerProps } from \"./indicator-trigger.port\";\r\nexport interface PriceTriggerProps extends IndicatorTriggerProps {\r\n    field: \"value\";\r\n}\r\n",
-    "filename": "file:///node_modules/yieldfinity/domain/port/entities/indicator/triggers/price.trigger.port.d.ts",
-    "language": "typescript"
-  },
-  {
-    "value": "import { IndicatorTriggerProps } from \"./indicator-trigger.port\";\r\nexport interface RSITriggerProps extends IndicatorTriggerProps {\r\n    field: \"value\";\r\n}\r\n",
-    "filename": "file:///node_modules/yieldfinity/domain/port/entities/indicator/triggers/rsi.trigger.port.d.ts",
-    "language": "typescript"
-  },
-  {
-    "value": "import { IndicatorTriggerProps } from \"./indicator-trigger.port\";\r\nexport interface SMATriggerProps extends IndicatorTriggerProps {\r\n    field: \"value\";\r\n}\r\n",
-    "filename": "file:///node_modules/yieldfinity/domain/port/entities/indicator/triggers/sma.trigger.port.d.ts",
-    "language": "typescript"
-  },
-  {
-    "value": "import { Position } from \"../orders/position.port\";\r\nexport interface ATRIndicatorParameters {\r\n    period: number;\r\n}\r\nexport interface ATRIndicatorInput {\r\n    low: number;\r\n    high: number;\r\n    close: number;\r\n}\r\nexport declare type ATRIndicatorOutput = number;\r\nexport interface ATRMethod {\r\n    (prices: ATRIndicatorInput): ATRIndicatorOutput;\r\n}\r\nexport interface ATRIndicator {\r\n    name: \"atr\";\r\n    method: ATRMethod;\r\n    parameters: ATRIndicatorParameters;\r\n}\r\nexport declare type ATRIndicatorTriggerValidator = (output: ATRIndicatorOutput) => Position[];\r\n",
+    "value": "import { Candle } from \"../../../entities\";\r\nexport interface ATRIndicatorParameters {\r\n    period: number;\r\n}\r\nexport interface ATRIndicatorInput {\r\n    low: number;\r\n    high: number;\r\n    close: number;\r\n}\r\nexport declare type ATRIndicatorOutput = number;\r\nexport declare type ATRMethodParameters = {\r\n    candle: Candle;\r\n    values: ATRIndicatorOutput[];\r\n    lastValue: ATRIndicatorOutput;\r\n    lastIndex: number;\r\n};\r\nexport declare type ATRMethod = (parameters: ATRMethodParameters) => ATRIndicatorOutput;\r\nexport declare type ATRMethodBuilder = (parameters: ATRIndicatorParameters) => ATRMethod;\r\nexport interface ATRIndicator {\r\n    name: \"atr\";\r\n    method: ATRMethod;\r\n    parameters: ATRIndicatorParameters;\r\n}\r\n",
     "filename": "file:///node_modules/yieldfinity/domain/port/entities/indicators/atr.port.d.ts",
     "language": "typescript"
   },
   {
-    "value": "import { Position } from \"../orders/position.port\";\r\nexport interface EMAIndicatorParameters {\r\n    period: number;\r\n}\r\nexport declare type EMAIndicatorOutput = number;\r\nexport declare type EMAIndicatorInput = number;\r\nexport interface EMAMethod {\r\n    (price: EMAIndicatorInput): EMAIndicatorOutput;\r\n}\r\nexport interface EMAIndicator {\r\n    name: \"ema\";\r\n    method: EMAMethod;\r\n    parameters: EMAIndicatorParameters;\r\n}\r\nexport declare type EMAIndicatorTriggerValidator = (output: EMAIndicatorOutput) => Position[];\r\n",
+    "value": "import { Candle } from \"../../../entities\";\r\nexport interface AverageGainIndicatorParameters {\r\n    period: number;\r\n}\r\nexport declare type AverageGainIndicatorOutput = number;\r\nexport declare type AverageGainIndicatorInput = number;\r\nexport declare type AverageGainMethodParameters = {\r\n    candle: Candle;\r\n    values: AverageGainIndicatorOutput[];\r\n    lastValue: AverageGainIndicatorOutput;\r\n    lastIndex: number;\r\n};\r\nexport declare type AverageGainMethod = (parameters: AverageGainMethodParameters) => AverageGainIndicatorOutput;\r\nexport declare type AverageGainMethodBuilder = (parameters: AverageGainIndicatorParameters) => AverageGainMethod;\r\nexport interface AverageGainIndicator {\r\n    name: \"average-gain\";\r\n    method: AverageGainMethod;\r\n    parameters: AverageGainIndicatorParameters;\r\n}\r\n",
+    "filename": "file:///node_modules/yieldfinity/domain/port/entities/indicators/average-gain.port.d.ts",
+    "language": "typescript"
+  },
+  {
+    "value": "import { Candle } from \"../../../entities\";\r\nexport interface AverageLossIndicatorParameters {\r\n    period: number;\r\n}\r\nexport declare type AverageLossIndicatorOutput = number;\r\nexport declare type AverageLossIndicatorInput = number;\r\nexport declare type AverageLossMethodParameters = {\r\n    candle: Candle;\r\n    values: AverageLossIndicatorOutput[];\r\n    lastValue: AverageLossIndicatorOutput;\r\n    lastIndex: number;\r\n};\r\nexport declare type AverageLossMethod = (parameters: AverageLossMethodParameters) => AverageLossIndicatorOutput;\r\nexport declare type AverageLossMethodBuilder = (parameters: AverageLossIndicatorParameters) => AverageLossMethod;\r\nexport interface AverageLossIndicator {\r\n    name: \"average-loss\";\r\n    method: AverageLossMethod;\r\n    parameters: AverageLossIndicatorParameters;\r\n}\r\n",
+    "filename": "file:///node_modules/yieldfinity/domain/port/entities/indicators/average-loss.port.d.ts",
+    "language": "typescript"
+  },
+  {
+    "value": "import { Candle } from \"../../../entities\";\r\nexport interface EMAIndicatorParameters {\r\n    period: number;\r\n}\r\nexport declare type EMAIndicatorOutput = number;\r\nexport declare type EMAIndicatorInput = number;\r\nexport declare type EMAMethodParameters = {\r\n    candle: Candle;\r\n    values: EMAIndicatorOutput[];\r\n    lastValue: EMAIndicatorOutput;\r\n    lastIndex: number;\r\n};\r\nexport declare type EMAMethod = (parameters: EMAMethodParameters) => EMAIndicatorOutput;\r\nexport declare type EMAMethodBuilder = (parameters: EMAIndicatorParameters) => EMAMethod;\r\nexport interface EMAIndicator {\r\n    name: \"ema\";\r\n    method: EMAMethod;\r\n    parameters: EMAIndicatorParameters;\r\n}\r\n",
     "filename": "file:///node_modules/yieldfinity/domain/port/entities/indicators/ema.port.d.ts",
     "language": "typescript"
   },
@@ -290,22 +250,22 @@
     "language": "typescript"
   },
   {
-    "value": "import { Position } from \"../orders/position.port\";\r\nexport interface MACDIndicatorParameters {\r\n    SimpleMAOscillator: boolean;\r\n    SimpleMASignal: boolean;\r\n    fastPeriod: number;\r\n    slowPeriod: number;\r\n    signalPeriod: number;\r\n}\r\nexport declare type MACDIndicatorOutput = {\r\n    MACD?: number;\r\n    signal?: number;\r\n    histogram?: number;\r\n};\r\nexport declare type MACDIndicatorInput = number;\r\nexport interface MACDMethod {\r\n    (price: MACDIndicatorInput): MACDIndicatorOutput;\r\n}\r\nexport interface MACDIndicator {\r\n    name: \"macd\";\r\n    method: MACDMethod;\r\n    parameters: MACDIndicatorParameters;\r\n}\r\nexport declare type MACDIndicatorTriggerValidator = (output: MACDIndicatorOutput) => Position[];\r\n",
+    "value": "import { Candle } from \"../../../entities\";\r\nexport interface MACDIndicatorParameters {\r\n    fastPeriod: number;\r\n    slowPeriod: number;\r\n    signalPeriod: number;\r\n    emaSmoothing?: number;\r\n}\r\nexport declare type MACDIndicatorOutput = {\r\n    MACD?: number;\r\n    signal?: number;\r\n    histogram?: number;\r\n};\r\nexport declare type MACDIndicatorInput = number;\r\nexport declare type MACDMethodParameters = {\r\n    candle: Candle;\r\n    values: MACDIndicatorOutput[];\r\n    lastValue: MACDIndicatorOutput;\r\n    lastIndex: number;\r\n};\r\nexport declare type MACDMethod = (parameters: MACDMethodParameters) => MACDIndicatorOutput;\r\nexport declare type MACDMethodBuilder = (parameters: MACDIndicatorParameters) => MACDMethod;\r\nexport interface MACDIndicator {\r\n    name: \"macd\";\r\n    method: MACDMethod;\r\n    parameters: MACDIndicatorParameters;\r\n}\r\n",
     "filename": "file:///node_modules/yieldfinity/domain/port/entities/indicators/macd.port.d.ts",
     "language": "typescript"
   },
   {
-    "value": "import { Position } from \"../orders/position.port\";\r\nexport declare type PriceIndicatorMode = \"high\" | \"low\" | \"open\" | \"close\";\r\nexport interface PriceIndicatorParameters {\r\n    mode: PriceIndicatorMode;\r\n}\r\nexport declare type PriceIndicatorInput = number;\r\nexport declare type PriceIndicatorOutput = number;\r\nexport interface PriceMethod {\r\n    (prices: PriceIndicatorInput): PriceIndicatorOutput;\r\n}\r\nexport interface PriceIndicator {\r\n    name: \"price\";\r\n    method: PriceMethod;\r\n    parameters: PriceIndicatorParameters;\r\n}\r\nexport declare type PriceIndicatorTriggerValidator = (output: PriceIndicatorOutput) => Position[];\r\n",
+    "value": "import { Candle } from \"../../../entities\";\r\nexport declare type PriceIndicatorMode = \"high\" | \"low\" | \"open\" | \"close\";\r\nexport interface PriceIndicatorParameters {\r\n    mode: PriceIndicatorMode;\r\n}\r\nexport declare type PriceIndicatorInput = number;\r\nexport declare type PriceIndicatorOutput = number;\r\nexport declare type PriceMethodParameters = {\r\n    candle: Candle;\r\n    values: PriceIndicatorOutput[];\r\n    lastValue: PriceIndicatorOutput;\r\n    lastIndex: number;\r\n};\r\nexport declare type PriceMethod = (parameters: PriceMethodParameters) => PriceIndicatorOutput;\r\nexport declare type PriceMethodBuilder = (parameters: PriceIndicatorParameters) => PriceMethod;\r\nexport interface PriceIndicator {\r\n    name: \"price\";\r\n    method: PriceMethod;\r\n    parameters: PriceIndicatorParameters;\r\n}\r\n",
     "filename": "file:///node_modules/yieldfinity/domain/port/entities/indicators/price.port.d.ts",
     "language": "typescript"
   },
   {
-    "value": "import { Position } from \"../orders/position.port\";\r\nexport interface RSIIndicatorParameters {\r\n    period: number;\r\n}\r\nexport declare type RSIIndicatorOutput = number;\r\nexport declare type RSIIndicatorInput = number;\r\nexport interface RSIMethod {\r\n    (price: RSIIndicatorInput): RSIIndicatorOutput;\r\n}\r\nexport interface RSIIndicator {\r\n    name: \"rsi\";\r\n    method: RSIMethod;\r\n    parameters: RSIIndicatorParameters;\r\n}\r\nexport declare type RSIIndicatorTriggerValidator = (output: RSIIndicatorOutput) => Position[];\r\n",
+    "value": "import { Candle } from \"../../../entities\";\r\nexport interface RSIIndicatorParameters {\r\n    period: number;\r\n}\r\nexport declare type RSIIndicatorOutput = number;\r\nexport declare type RSIIndicatorInput = number;\r\nexport declare type RSIMethodParameters = {\r\n    candle: Candle;\r\n    values: RSIIndicatorOutput[];\r\n    lastValue: RSIIndicatorOutput;\r\n    lastIndex: number;\r\n};\r\nexport declare type RSIMethod = (parameters: RSIMethodParameters) => RSIIndicatorOutput;\r\nexport declare type RSIMethodBuilder = (parameters: RSIIndicatorParameters) => RSIMethod;\r\nexport interface RSIIndicator {\r\n    name: \"rsi\";\r\n    method: RSIMethod;\r\n    parameters: RSIIndicatorParameters;\r\n}\r\n",
     "filename": "file:///node_modules/yieldfinity/domain/port/entities/indicators/rsi.port.d.ts",
     "language": "typescript"
   },
   {
-    "value": "import { Position } from \"../orders/position.port\";\r\nexport interface SMAIndicatorParameters {\r\n    period: number;\r\n}\r\nexport declare type SMAIndicatorOutput = number;\r\nexport declare type SMAIndicatorInput = number;\r\nexport interface SMAMethod {\r\n    (price: SMAIndicatorInput): SMAIndicatorOutput;\r\n}\r\nexport interface SMAIndicator {\r\n    name: \"sma\";\r\n    method: SMAMethod;\r\n    parameters: SMAIndicatorParameters;\r\n}\r\nexport declare type SMAIndicatorTriggerValidator = (output: SMAIndicatorOutput) => Position[];\r\n",
+    "value": "import { Candle } from \"../../../entities\";\r\nexport interface SMAIndicatorParameters {\r\n    period: number;\r\n}\r\nexport declare type SMAIndicatorOutput = number;\r\nexport declare type SMAIndicatorInput = number;\r\nexport declare type SMAMethodParameters = {\r\n    candle: Candle;\r\n    values: SMAIndicatorOutput[];\r\n    lastValue: SMAIndicatorOutput;\r\n    lastIndex: number;\r\n};\r\nexport declare type SMAMethod = (parameters: SMAMethodParameters) => SMAIndicatorOutput;\r\nexport declare type SMAMethodBuilder = (parameters: SMAIndicatorParameters) => SMAMethod;\r\nexport interface SMAIndicator {\r\n    name: \"sma\";\r\n    method: SMAMethod;\r\n    parameters: SMAIndicatorParameters;\r\n}\r\n",
     "filename": "file:///node_modules/yieldfinity/domain/port/entities/indicators/sma.port.d.ts",
     "language": "typescript"
   },
@@ -356,31 +316,6 @@
   },
   {
     "value": "import { ExchangePair } from \"../../repositories/exchange.port\";\r\nexport interface MarketOrder {\r\n    type: \"market\";\r\n}\r\nexport interface LimitOrder {\r\n    type: \"market\";\r\n    price: number;\r\n}\r\nexport interface StopMarketOrder {\r\n    type: \"stopMarket\";\r\n    stopPrice: number;\r\n}\r\nexport interface StopLimitOrder {\r\n    type: \"stopMarket\";\r\n    stopPrice: number;\r\n    price: number;\r\n}\r\nexport declare type FutureOrderType = MarketOrder | LimitOrder | StopMarketOrder | StopLimitOrder;\r\nexport declare type FutureOrderSide = \"long\" | \"short\";\r\nexport interface FutureOrderState {\r\n    openedAt: Date;\r\n    closedAt: Date;\r\n    fee: number;\r\n    profit: number;\r\n    leverage: number;\r\n}\r\nexport interface FutureOrderProps {\r\n    pair: ExchangePair;\r\n    side: FutureOrderSide;\r\n    size: number;\r\n    order: FutureOrderType;\r\n    state: FutureOrderState;\r\n}\r\n",
-    "filename": "file:///node_modules/yieldfinity/domain/port/entities/order/future-order.port.d.ts",
-    "language": "typescript"
-  },
-  {
-    "value": "export * from './future-order.port';\r\nexport * from './order.port';\r\nexport * from './position.port';\r\nexport * from './stop-loss-take-profit.port';\r\n",
-    "filename": "file:///node_modules/yieldfinity/domain/port/entities/order/index.d.ts",
-    "language": "typescript"
-  },
-  {
-    "value": "import { ExchangePair } from \"../../repositories/exchange.port\";\r\nimport { StopLoss } from \"../../../entities/orders/stop-loss\";\r\nimport { TakeProfit } from \"../../../entities/orders/take-profit\";\r\nexport declare type OrderSide = \"ask\" | \"bid\";\r\nexport interface OrderState {\r\n    openAt: Date | null;\r\n    closeAt: Date | null;\r\n    fee: number | null;\r\n    profit: number | null;\r\n    pnl: number | null;\r\n}\r\nexport interface OrderParameters {\r\n    side: OrderSide;\r\n    pair: ExchangePair;\r\n    quantity: number;\r\n    price: number | \"market\";\r\n    stopLoss: StopLoss;\r\n    takeProfit: TakeProfit;\r\n}\r\n",
-    "filename": "file:///node_modules/yieldfinity/domain/port/entities/order/order.port.d.ts",
-    "language": "typescript"
-  },
-  {
-    "value": "import { Order } from \"../../../entities/orders/order\";\r\nexport declare type Position = Order;\r\n",
-    "filename": "file:///node_modules/yieldfinity/domain/port/entities/order/position.port.d.ts",
-    "language": "typescript"
-  },
-  {
-    "value": "/**\r\n * Stop loss / Take profit\r\n * @param value: The value that will trigger the order\r\n * @param mode: If \"number\", will compare in absolute values, if \"percentage\" will compare in relative value\r\n * @param reference: Either use the price as reference or the profit and loss ratio\r\n * @param amount: The amount of the asset you want to buy / sell (always 100% for now)\r\n */\r\nexport interface StopLossTakeProfitProps {\r\n    value: number;\r\n    reference: \"price\" | \"pnl\";\r\n}\r\n",
-    "filename": "file:///node_modules/yieldfinity/domain/port/entities/order/stop-loss-take-profit.port.d.ts",
-    "language": "typescript"
-  },
-  {
-    "value": "import { ExchangePair } from \"../../repositories/exchange.port\";\r\nexport interface MarketOrder {\r\n    type: \"market\";\r\n}\r\nexport interface LimitOrder {\r\n    type: \"market\";\r\n    price: number;\r\n}\r\nexport interface StopMarketOrder {\r\n    type: \"stopMarket\";\r\n    stopPrice: number;\r\n}\r\nexport interface StopLimitOrder {\r\n    type: \"stopMarket\";\r\n    stopPrice: number;\r\n    price: number;\r\n}\r\nexport declare type FutureOrderType = MarketOrder | LimitOrder | StopMarketOrder | StopLimitOrder;\r\nexport declare type FutureOrderSide = \"long\" | \"short\";\r\nexport interface FutureOrderState {\r\n    openedAt: Date;\r\n    closedAt: Date;\r\n    fee: number;\r\n    profit: number;\r\n    leverage: number;\r\n}\r\nexport interface FutureOrderProps {\r\n    pair: ExchangePair;\r\n    side: FutureOrderSide;\r\n    size: number;\r\n    order: FutureOrderType;\r\n    state: FutureOrderState;\r\n}\r\n",
     "filename": "file:///node_modules/yieldfinity/domain/port/entities/orders/future-order.port.d.ts",
     "language": "typescript"
   },
@@ -390,7 +325,7 @@
     "language": "typescript"
   },
   {
-    "value": "import { ExchangePair } from \"../../repositories/exchange.port\";\r\nimport { StopLoss } from \"../../../entities/orders/stop-loss\";\r\nimport { TakeProfit } from \"../../../entities/orders/take-profit\";\r\nexport declare type OrderSide = \"ask\" | \"bid\";\r\nexport interface OrderState {\r\n    openAt: Date | null;\r\n    closeAt: Date | null;\r\n    fee: number | null;\r\n    profit: number | null;\r\n    pnl: number | null;\r\n}\r\nexport interface OrderParameters {\r\n    side: OrderSide;\r\n    pair: ExchangePair;\r\n    quantity: number;\r\n    price: number | \"market\";\r\n    stopLoss: StopLoss;\r\n    takeProfit: TakeProfit;\r\n}\r\n",
+    "value": "import { ExchangePair } from \"../../repositories/exchange.port\";\r\nimport { StopLoss } from \"../../../entities/orders/stop-loss\";\r\nimport { TakeProfit } from \"../../../entities/orders/take-profit\";\r\nexport declare type OrderSide = \"long\" | \"short\";\r\nexport interface OrderState {\r\n    openAt: Date | null;\r\n    closeAt: Date | null;\r\n    fee: number;\r\n    profit: number;\r\n    pnl: number;\r\n}\r\nexport interface OrderProps {\r\n    side: OrderSide;\r\n    pair: ExchangePair;\r\n    quantity: number;\r\n    price: number | \"market\";\r\n    stopLoss: StopLoss;\r\n    takeProfit: TakeProfit;\r\n}\r\n",
     "filename": "file:///node_modules/yieldfinity/domain/port/entities/orders/order.port.d.ts",
     "language": "typescript"
   },
@@ -420,7 +355,7 @@
     "language": "typescript"
   },
   {
-    "value": "import { Indicator } from \"../../entities/indicator\";\r\nimport { ATRIndicatorParameters } from \"../entities/indicators/atr.port\";\r\nimport { EMAIndicatorParameters } from \"../entities/indicators/ema.port\";\r\nimport { MACDIndicatorParameters } from \"../entities/indicators/macd.port\";\r\nimport { PriceIndicatorParameters } from \"../entities/indicators/price.port\";\r\nimport { RSIIndicatorParameters } from \"../entities/indicators/rsi.port\";\r\nimport { SMAIndicatorParameters } from \"../entities/indicators/sma.port\";\r\nimport { IndicatorMethodParametersMapperInterface } from \"../mappers/indicator-method-parameters-mapper.port\";\r\nexport interface IndicatorsFactoryProps {\r\n    mapper: IndicatorMethodParametersMapperInterface;\r\n    uuid(): string;\r\n}\r\nexport interface IndicatorTriggersMap {\r\n    [indicator: string]: string[];\r\n}\r\nexport interface IndicatorsFactoryInterface {\r\n    sma(parameters: SMAIndicatorParameters): Indicator;\r\n    ema(parameters: EMAIndicatorParameters): Indicator;\r\n    rsi(parameters: RSIIndicatorParameters): Indicator;\r\n    macd(parameters: MACDIndicatorParameters): Indicator;\r\n    atr(parameters: ATRIndicatorParameters): Indicator;\r\n    price(parameters: PriceIndicatorParameters): Indicator;\r\n    triggers: IndicatorTriggersMap;\r\n}\r\n",
+    "value": "import { Indicator } from \"../../entities/indicator\";\r\nimport { AverageGainIndicatorParameters } from \"../entities/indicators/average-gain.port\";\r\nimport { AverageLossIndicatorParameters } from \"../entities/indicators/average-loss.port\";\r\nimport { EMAIndicatorParameters } from \"../entities/indicators/ema.port\";\r\nimport { MACDIndicatorParameters } from \"../entities/indicators/macd.port\";\r\nimport { PriceIndicatorParameters } from \"../entities/indicators/price.port\";\r\nimport { RSIIndicatorParameters } from \"../entities/indicators/rsi.port\";\r\nimport { SMAIndicatorParameters } from \"../entities/indicators/sma.port\";\r\nimport { IndicatorMethodParametersMapperInterface } from \"../mappers/indicator-method-parameters-mapper.port\";\r\nexport interface IndicatorsFactoryProps {\r\n    mapper: IndicatorMethodParametersMapperInterface;\r\n    uuid(): string;\r\n}\r\nexport interface IndicatorTriggersMap {\r\n    [indicator: string]: string[];\r\n}\r\nexport interface IndicatorsFactoryInterface {\r\n    price(parameters: PriceIndicatorParameters): Indicator;\r\n    sma(parameters: SMAIndicatorParameters): Indicator;\r\n    ema(parameters: EMAIndicatorParameters): Indicator;\r\n    rsi(parameters: RSIIndicatorParameters): Indicator;\r\n    macd(parameters: MACDIndicatorParameters): Indicator;\r\n    averageGain(parameters: AverageGainIndicatorParameters): Indicator;\r\n    averageLoss(parameters: AverageLossIndicatorParameters): Indicator;\r\n    triggers: IndicatorTriggersMap;\r\n}\r\n",
     "filename": "file:///node_modules/yieldfinity/domain/port/factories/indicators.factory.port.d.ts",
     "language": "typescript"
   },
@@ -450,12 +385,12 @@
     "language": "typescript"
   },
   {
-    "value": "import { CsvParserOptions } from \"../../../adapters/services/csv.service\";\r\nexport interface CsvService {\r\n    parse(filePath: string, options?: CsvParserOptions): any;\r\n}\r\n",
+    "value": "import { CsvParserOptions } from \"../../../adapters/services/csv.service\";\r\nexport interface CsvService {\r\n    parse(content: string, options?: CsvParserOptions): any;\r\n}\r\n",
     "filename": "file:///node_modules/yieldfinity/domain/port/services/csv.port.d.ts",
     "language": "typescript"
   },
   {
-    "value": "export interface FileService {\r\n    download(path: string, filename: string, destination: string): Promise<void>;\r\n    delete(filePath: string): Promise<void>;\r\n    read(filePath: string): Promise<string>;\r\n}\r\n",
+    "value": "/// <reference types=\"node\" />\r\nexport interface FileService {\r\n    downloadAsBuffer(path: string): Promise<Buffer>;\r\n}\r\n",
     "filename": "file:///node_modules/yieldfinity/domain/port/services/file.port.d.ts",
     "language": "typescript"
   },
@@ -465,7 +400,7 @@
     "language": "typescript"
   },
   {
-    "value": "export interface ZipService {\r\n    unzip(path: string, filename: string, destination: string): Promise<void>;\r\n}\r\n",
+    "value": "/// <reference types=\"node\" />\r\nexport interface ZipService {\r\n    unzipBuffer(buffer: Buffer, fileToExtract: string): Promise<string>;\r\n}\r\n",
     "filename": "file:///node_modules/yieldfinity/domain/port/services/zip.port.d.ts",
     "language": "typescript"
   },
