@@ -20,7 +20,7 @@
     "csv-parse": "^4.15.4",
     "lightweight-charts": "^3.3.0",
     "material-ui": "^0.20.2",
-    "moment": "^2.29.1",
+    "moment": "^2.29.4",
     "moment-round": "^1.0.1",
     "ora": "^5.4.0",
     "react": "^17.0.2",
